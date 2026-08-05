@@ -10,10 +10,10 @@ ulaşmadan engelliyor. Hiçbir veri kaydedilmez, hiçbir ağ isteği atılmaz.
 
 1. **[PROJE.md](PROJE.md)** — ürün ne, kim neyin sahibi, ortak kurallar, takvim
 2. **`görevler/` altındaki kendi dosyan** — görevin, nasıl yapacağın, teslim listesi:
-   - [Ebubekir — Android Kalkan](görevler/ebubekir-android-kalkan.md)
-   - [Ezgi — Demo Sandbox](görevler/ezgi-demo-sandbox.md)
-   - [Aylin — Chrome Eklentisi](görevler/aylin-chrome-eklentisi.md)
-   - [Halil — Tespit Modeli](görevler/halil-tespit-modeli.md)
+   - [Ebubekir - Android Kalkan](görevler/ebubekir-android-kalkan.md)
+   - [Ezgi - Demo Sandbox](görevler/ezgi-demo-sandbox.md)
+   - [Aylin - Chrome Eklentisi](görevler/aylin-chrome-eklentisi.md)
+   - [Halil - Tespit Modeli](görevler/halil-tespit-modeli.md)
 3. Gerektikçe:
    - **Ebubekir:** diğer üç görev dosyası (entegrasyon sözleşmeleri —
      model teslim formatı Halil'in, sandbox uyum kuralları Ezgi'nin
