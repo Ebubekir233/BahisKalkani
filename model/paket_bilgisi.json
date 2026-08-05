@@ -1,0 +1,7 @@
+{
+  "surum": "v10.4-topluluk",
+  "olusturma": "2026-07-18",
+  "beklenen_egitim_toplami": 5654,
+  "model_turu": "5 üyeli topluluk (ensemble) — tek TFLite, ~300-550 KB",
+  "not": "train.py bu dosyayı ilk satırda basar; görünmüyorsa ESKİ zip açılmış demektir. v10.4 = v10.3 + cerrahi tur: koşu-1'in kalan 10 hata ailesi (forum-üyelik kapı ailesi dahil). Yeni kod kanıtı: 'Sızıntı kontrolü ✓' + 'KUANTALI TFLite' satırları."
+}

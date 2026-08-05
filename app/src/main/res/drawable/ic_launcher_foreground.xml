@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  BahisKalkanı simgesi: kalkan + ortasında "sansür bandı" kesiği.
+  Bant, uygulamanın yaptığı işi anlatır: bahis içeriğinin üstünü kapatmak.
+  Bant evenOdd ile delik olarak kesildiği için monokrom (Android 13+ temalı
+  simge) modunda da motif korunur. Renkler overlay kapaklarıyla aynı marka
+  paleti: #263238 füme zemin, #80CBC4 turkuaz kalkan.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#FF80CBC4"
+        android:fillType="evenOdd"
+        android:pathData="M54,25 L33,33 L33,48 C33,63.5 42,73.5 54,78 C66,73.5 75,63.5 75,48 L75,33 Z
+            M44,47.5 L64,47.5 A4,4 0 0 1 64,55.5 L44,55.5 A4,4 0 0 1 44,47.5 Z" />
+</vector>

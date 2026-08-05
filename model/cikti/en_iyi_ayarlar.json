@@ -1,0 +1,24 @@
+{
+  "ayarlar": {
+    "embed_dim": 32,
+    "filtreler": 160,
+    "cekirdekler": [
+      3,
+      4,
+      5
+    ],
+    "spatial_dropout": 0.1672598958793736,
+    "dropout1": 0.2911188196068541,
+    "dropout2": 0.10281290743799544,
+    "dense_birim": 64,
+    "l2": 1.5464846592020882e-05,
+    "lr": 0.001614547093879506,
+    "label_smoothing": 0.1,
+    "batch": 32,
+    "kayip": "bce",
+    "focal_gamma": 1.0671717698689442
+  },
+  "cv_auc": 0.9875,
+  "denemeler": 40,
+  "kat": 3
+}

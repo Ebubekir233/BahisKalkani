@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bahis Kalkanı — Web Demo</title>
+<style>
+  :root {
+    --bg: #15202b;
+    --card: #1c2732;
+    --border: #2f3d4a;
+    --text: #e7e9ea;
+    --text-dim: #8b98a5;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg); color: var(--text);
+    display: flex; flex-direction: column; align-items: center;
+    min-height: 100vh;
+  }
+  header {
+    position: sticky; top: 0; z-index: 50;
+    width: 100%; display: flex; justify-content: center;
+    background: rgba(21,32,43,0.85); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+  }
+  .header-inner {
+    width: 100%; max-width: 600px;
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 16px;
+  }
+  .logo {
+    width: 40px; height: 40px; border-radius: 12px;
+    background: var(--card); display: flex; align-items: center;
+    justify-content: center; font-size: 22px; flex-shrink: 0;
+  }
+  .header-titles h1 { font-size: 18px; font-weight: 700; }
+  .header-titles p { font-size: 12px; color: var(--text-dim); }
+
+  main { width: 100%; max-width: 600px; padding: 8px 0 60px; }
+  .post {
+    display: flex; gap: 12px; padding: 14px 16px;
+    border-bottom: 1px solid var(--border); position: relative;
+  }
+  .avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 16px; color: #fff; flex-shrink: 0;
+  }
+  .post-body { flex: 1; min-width: 0; }
+  .post-head { display: flex; align-items: baseline; gap: 6px; font-size: 14px; }
+  .post-head .name { font-weight: 700; }
+  .post-head .handle, .post-head .time { color: var(--text-dim); }
+  .post-text { margin-top: 4px; font-size: 15px; line-height: 1.5; white-space: pre-wrap; }
+  .post-actions {
+    display: flex; gap: 48px; margin-top: 10px;
+    color: var(--text-dim); font-size: 13px;
+  }
+  .post-actions span { cursor: pointer; }
+
+  footer {
+    width: 100%; max-width: 600px; padding: 16px;
+    color: var(--text-dim); font-size: 12px; text-align: center;
+    border-top: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div class="logo">🛡</div>
+    <div class="header-titles">
+      <h1>Akış</h1>
+      <p>Bahis Kalkanı — web demo</p>
+    </div>
+  </div>
+</header>
+
+<main id="feed"></main>
+
+<footer>
+  Bu sayfa, Chrome eklentisini gerçek koşullarda test etmek için hazırlanmış
+  nötr bir örnek akıştır — sayfanın kendisi hiçbir engelleme yapmaz. Koruma
+  yalnızca Bahis Kalkanı Chrome eklentisi kurulup etkinleştirildiğinde
+  devreye girer.
+</footer>
+
+<script>
+  // === Örnek akış (Ezgi'nin posts.json formatına yakın) ===
+  // ~%30 bahis (düz + sansürlü + Telegram davet), ~%70 masum + tuzak kelimeli
+  // Bu liste, eklentinin (veya Android modelinin) gerçek koşullarda test
+  // edilmesi için nötr içerik üretir — sayfanın kendisi hiçbir tespit/
+  // engelleme yapmaz.
+  const POSTS = [
+    { name: "Spor Yorumu", handle: "@sporyorum", time: "2s", color: "#1d9bf0", text: "Derbi öncesi son durum: iki takım da eksiklerine rağmen iddialı. Sizce skor ne olur?" },
+    { name: "Kazanç Kanalı", handle: "@vipkupon", time: "3s", color: "#e0245e", text: "🔥 Deneme bonusu 500 TL! Çevrim yok, hemen çek. Kanala katıl: t.me/viponuslar" },
+    { name: "Ayşe", handle: "@ayse_yldz", time: "5s", color: "#794bc4", text: "Betül'le kütüphanede alfabetik sıralama ödevini bitirdik nihayet 😄" },
+    { name: "Son Dakika", handle: "@haberajans", time: "8s", color: "#f45d22", text: "Yasa dışı bahis operasyonu: 12 ilde 40 gözaltı, 76 milyon lira el konuldu." },
+    { name: "Free Spin Bot", handle: "@slotkral", time: "12s", color: "#17bf63", text: "c4sino gecesi başladı! Ç3vrimsiz b0nus ve free spin için DM at, link gelsin 🎰" },
+    { name: "Mehmet Kaya", handle: "@mkaya", time: "15s", color: "#ffad1f", text: "Bugün hava harika, sahilde uzun bir yürüyüş yaptım. Herkese iyi hafta sonları!" },
+    { name: "Teknoloji", handle: "@teknohaber", time: "18s", color: "#1d9bf0", text: "Yeni telefon modelleri tanıtıldı: daha iyi kamera, daha uzun batarya ömrü." },
+    { name: "Banko Hoca", handle: "@bankococ", time: "22s", color: "#e0245e", text: "Dünkü kuponla kasa katladık 💰 Bugünün bankosu için özel gruba gel, oranlar uçuyor!" },
+    { name: "Zeynep", handle: "@zeynep_a", time: "25s", color: "#794bc4", text: "Kumar bağımlılığı ciddi bir sorun. Yardım hattı: 191 — utanmayın, arayın." },
+    { name: "Yemek Tarifi", handle: "@lezzetli", time: "30s", color: "#17bf63", text: "Fırında sebzeli tavuk tarifi: 40 dakikada hazır, çok pratik ve sağlıklı 🍗" },
+    { name: "İddaa Tüyo", handle: "@iddaavip", time: "35s", color: "#ffad1f", text: "Canlı bahis fırsatı! Bu maçta oran 8.50'ye çıktı, kaçırma. Üye ol kazan." },
+    { name: "Ali Demir", handle: "@alidemir", time: "40s", color: "#1d9bf0", text: "Kitap önerisi: bu ay okuduğum en iyi roman. İddialı bir kurgu, sonu şaşırtıyor." },
+  ];
+
+  const feed = document.getElementById("feed");
+  POSTS.forEach((p) => {
+    const el = document.createElement("article");
+    el.className = "post";
+    el.innerHTML = `
+      <div class="avatar" style="background:${p.color}">${p.name[0]}</div>
+      <div class="post-body">
+        <div class="post-head">
+          <span class="name">${p.name}</span>
+          <span class="handle">${p.handle}</span>
+          <span class="time">· ${p.time}</span>
+        </div>
+        <div class="post-text"></div>
+        <div class="post-actions"><span>💬 12</span><span>🔁 4</span><span>❤️ 38</span></div>
+      </div>`;
+    el.querySelector(".post-text").textContent = p.text;
+    feed.appendChild(el);
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Bahis Kalkanı</string>
+    <string name="accessibility_service_label">Bahis Kalkanı</string>
+    <string name="accessibility_service_description">Bahis Kalkanı, ekrandaki metinleri bahse teşvik eden içerikleri tespit etmek için okur ve bu içerikleri kapatır. Okunan hiçbir metin kaydedilmez, cihaz dışına gönderilmez ve internet bağlantısı kullanılmaz.</string>
+
+    <string name="main_title">Bahis Kalkanı</string>
+    <string name="main_slogan">Bahse teşvik eden içeriğe karşı cihaz üstü kalkan</string>
+    <string name="main_status_on">Kalkan aktif</string>
+    <string name="main_status_on_hint">Ekran taranıyor; bahse teşvik eden içerik anında kapatılıyor.</string>
+    <string name="main_status_off">Kalkan kapalı</string>
+    <string name="main_status_off_hint">Korumanın başlaması için erişilebilirlik ayarlarından Bahis Kalkanı\'nı etkinleştir.</string>
+    <string name="main_enable_button">Erişilebilirlik ayarını aç</string>
+    <string name="main_disable_button">Korumayı kapat</string>
+    <string name="main_disable_hint">Kapatmak için erişilebilirlik ayarlarına gidip Bahis Kalkanı\'nı kapatman yeterli.</string>
+    <string name="main_blocked_label">Bu oturumda engellenen içerik</string>
+    <string name="main_how_title">Nasıl çalışır?</string>
+    <string name="main_how_1">Erişilebilirlik servisi ekrandaki metinleri okur</string>
+    <string name="main_how_2">Kelime listesi ve cihaz üstü yapay zekâ birlikte karar verir</string>
+    <string name="main_how_3">Bahse teşvik eden içeriğin üstü anında kapatılır</string>
+    <string name="main_kvkk_note">Okunan hiçbir metin kaydedilmez, hiçbir veri cihazdan çıkmaz, internet bağlantısı kullanılmaz.</string>
+
+    <string name="overlay_warning">⚠️ Bahse teşvik eden içerik engellendi</string>
+    <string name="overlay_show_anyway">Yine de göster</string>
+    <string name="overlay_chip_show_all">%1$d içerik engellendi · Yine de göster</string>
+</resources>

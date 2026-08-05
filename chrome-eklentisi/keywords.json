@@ -1,0 +1,50 @@
+{
+  "version": 4,
+  "aciklama": "kesin: tek başına engelleme sebebi (Android + Chrome). genel: Chrome/web'de engelleme sebebi; Android'de karar TFLite modeline bırakılır. ignored: eşleşmeden önce metinden çıkarılır (marka adı). muaf: haber/uyarı bağlamı — bu kelimelerden biri geçiyorsa genel terimler engelleme sebebi SAYILMAZ; kesin ifadeler istisna (spam 'gözaltı' yazıp kaçamaz). Android KeywordDetector yalnız kesin+ignored okur; genel ve muaf Chrome/web tarafı içindir. Sansür normalizasyonu (0->o, 1->i, 3->e, 4->a, 5->s, 7->t, @->a, $->s) eşleşmeden önce uygulanır.",
+  "kesin": [
+    "deneme bonusu",
+    "çevrimsiz bonus",
+    "free spin",
+    "freebet",
+    "canlı bahis"
+  ],
+  "genel": [
+    "bahis",
+    "iddaa",
+    "casino",
+    "kazino",
+    "kumar",
+    "rulet",
+    "jackpot",
+    "banko",
+    "kombine",
+    "kasa katla",
+    "yatır kazan"
+  ],
+  "ignored": [
+    "bahiskalkanı",
+    "bahiskalkani",
+    "bahis kalkanı",
+    "bahis kalkani"
+  ],
+  "muaf": [
+    "gözaltı",
+    "operasyon",
+    "tutukland",
+    "el konuld",
+    "soruşturma",
+    "yakaland",
+    "adliyeye sevk",
+    "savcılık",
+    "masak",
+    "mal varlı",
+    "dolandırıc",
+    "rtük",
+    "reklam yasağı",
+    "bağımlıl",
+    "yardım hattı",
+    "191",
+    "ihbar",
+    "mağdur"
+  ]
+}

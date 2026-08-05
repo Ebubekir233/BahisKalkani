@@ -1,0 +1,828 @@
+{
+  "esik": 0.7,
+  "esik_kaynagi": "insan kararı (esik_karari.json): 0.7 — otomatik öneri 0.62 idi",
+  "surum_kapisi": {
+    "sozlesme": true,
+    "bildirilen_regresyon": true,
+    "inv_url": true
+  },
+  "hedef_karsilandi": true,
+  "inv_url_testi": {
+    "denenen": 50,
+    "ihlal": 0,
+    "urlsuz_pozitif_kacan": 0,
+    "urlli_pozitif": 5
+  },
+  "olcum_gecikme_ms": 0.29,
+  "kelime_katmani": {
+    "kesin": 5,
+    "ignored": 4
+  },
+  "kalibrasyon_tani": {
+    "n": 477,
+    "recall": 0.879,
+    "precision": 0.981,
+    "fp": 3,
+    "fn": 21,
+    "skor_bantlari": {
+      "poz": {
+        "0.0-0.3": 5,
+        "0.3-0.6": 12,
+        "0.6-0.9": 45,
+        "0.9-1.0": 112
+      },
+      "neg": {
+        "0.0-0.3": 288,
+        "0.3-0.6": 12,
+        "0.6-0.9": 3,
+        "0.9-1.0": 0
+      }
+    }
+  },
+  "on_isleme_surumu": 3,
+  "veri_parmak_izi": "9ef893bf46be",
+  "duman_testi": false,
+  "setler": {
+    "kabul_testi.jsonl": {
+      "metrikler": {
+        "dogruluk": 1.0,
+        "f1": 1.0,
+        "yanlis_pozitif": 0,
+        "yanlis_negatif": 0,
+        "tuzak_fp": 0
+      },
+      "dilimler": {
+        "bonus": {
+          "n": 10,
+          "hata": 0,
+          "fp": 0
+        },
+        "casino": {
+          "n": 6,
+          "hata": 0,
+          "fp": 0
+        },
+        "dolayli-argo": {
+          "n": 6,
+          "hata": 0,
+          "fp": 0
+        },
+        "finans": {
+          "n": 8,
+          "hata": 0,
+          "fp": 0
+        },
+        "gunluk": {
+          "n": 10,
+          "hata": 0,
+          "fp": 0
+        },
+        "haber-uyari": {
+          "n": 6,
+          "hata": 0,
+          "fp": 0
+        },
+        "kupon": {
+          "n": 10,
+          "hata": 0,
+          "fp": 0
+        },
+        "oyun-ui": {
+          "n": 6,
+          "hata": 0,
+          "fp": 0
+        },
+        "sansurlu": {
+          "n": 10,
+          "hata": 0,
+          "fp": 0
+        },
+        "spor": {
+          "n": 8,
+          "hata": 0,
+          "fp": 0
+        },
+        "telegram": {
+          "n": 8,
+          "hata": 0,
+          "fp": 0
+        },
+        "tuzak": {
+          "n": 12,
+          "hata": 0,
+          "fp": 0
+        }
+      },
+      "hatalar": [],
+      "terim_raporu": {
+        "kupon": {
+          "negatif": 0,
+          "fp": 0,
+          "pozitif": 13,
+          "fn": 0
+        },
+        "puan": {
+          "negatif": 1,
+          "fp": 0,
+          "pozitif": 0,
+          "fn": 0
+        },
+        "grup": {
+          "negatif": 1,
+          "fp": 0,
+          "pozitif": 0,
+          "fn": 0
+        },
+        "katıl": {
+          "negatif": 0,
+          "fp": 0,
+          "pozitif": 2,
+          "fn": 0
+        },
+        "katil": {
+          "negatif": 0,
+          "fp": 0,
+          "pozitif": 2,
+          "fn": 0
+        },
+        "tl": {
+          "negatif": 0,
+          "fp": 0,
+          "pozitif": 8,
+          "fn": 0
+        },
+        "link": {
+          "negatif": 0,
+          "fp": 0,
+          "pozitif": 9,
+          "fn": 0
+        },
+        "bonus": {
+          "negatif": 1,
+          "fp": 0,
+          "pozitif": 11,
+          "fn": 0
+        },
+        "kanal": {
+          "negatif": 0,
+          "fp": 0,
+          "pozitif": 5,
+          "fn": 0
+        },
+        "üye": {
+          "negatif": 0,
+          "fp": 0,
+          "pozitif": 5,
+          "fn": 0
+        },
+        "spin": {
+          "negatif": 0,
+          "fp": 0,
+          "pozitif": 2,
+          "fn": 0
+        }
+      },
+      "gri_haric": 0
+    },
+    "kabul_gercek.jsonl": {
+      "metrikler": {
+        "dogruluk": 0.9488,
+        "f1": 0.9375,
+        "yanlis_pozitif": 1,
+        "yanlis_negatif": 19,
+        "tuzak_fp": 0
+      },
+      "dilimler": {
+        "n-haber": {
+          "n": 12,
+          "hata": 0,
+          "fp": 0
+        },
+        "n-kampanya": {
+          "n": 12,
+          "hata": 0,
+          "fp": 0
+        },
+        "n-operasyon": {
+          "n": 8,
+          "hata": 0,
+          "fp": 0
+        },
+        "n-sikayet": {
+          "n": 15,
+          "hata": 1,
+          "fp": 1
+        },
+        "n-web": {
+          "n": 13,
+          "hata": 0,
+          "fp": 0
+        },
+        "n01-gunluk": {
+          "n": 9,
+          "hata": 0,
+          "fp": 0
+        },
+        "n02-skor-tahmin": {
+          "n": 9,
+          "hata": 0,
+          "fp": 0
+        },
+        "n03-tuzak-kelime": {
+          "n": 9,
+          "hata": 0,
+          "fp": 0
+        },
+        "n04-mesru-finans": {
+          "n": 10,
+          "hata": 0,
+          "fp": 0
+        },
+        "n05-operasyon-haber": {
+          "n": 7,
+          "hata": 0,
+          "fp": 0
+        },
+        "n06-bagimlilik-uyari": {
+          "n": 7,
+          "hata": 0,
+          "fp": 0
+        },
+        "n07-oyun-uygulama": {
+          "n": 10,
+          "hata": 0,
+          "fp": 0
+        },
+        "n08-oyun-gacha": {
+          "n": 10,
+          "hata": 0,
+          "fp": 0
+        },
+        "n09-mesru-url-haber": {
+          "n": 8,
+          "hata": 0,
+          "fp": 0
+        },
+        "n10-meta-veri": {
+          "n": 7,
+          "hata": 0,
+          "fp": 0
+        },
+        "n11-uyelik-cerez": {
+          "n": 7,
+          "hata": 0,
+          "fp": 0
+        },
+        "n12-eticaret-kupon": {
+          "n": 7,
+          "hata": 0,
+          "fp": 0
+        },
+        "n13-mesru-abonelik": {
+          "n": 6,
+          "hata": 0,
+          "fp": 0
+        },
+        "n14-cekilis-yarisma": {
+          "n": 9,
+          "hata": 0,
+          "fp": 0
+        },
+        "n15-piyango": {
+          "n": 8,
+          "hata": 0,
+          "fp": 0
+        },
+        "n16-fantezi-tahmin": {
+          "n": 9,
+          "hata": 0,
+          "fp": 0
+        },
+        "n17-kripto-airdrop": {
+          "n": 7,
+          "hata": 0,
+          "fp": 0
+        },
+        "n18-marka-haber": {
+          "n": 8,
+          "hata": 0,
+          "fp": 0
+        },
+        "n19-argo-masum": {
+          "n": 9,
+          "hata": 0,
+          "fp": 0
+        },
+        "n20-cok-kisa-masum": {
+          "n": 6,
+          "hata": 0,
+          "fp": 0
+        },
+        "p-sikayet": {
+          "n": 20,
+          "hata": 4,
+          "fp": 0
+        },
+        "p-telegram": {
+          "n": 30,
+          "hata": 2,
+          "fp": 0
+        },
+        "p-web": {
+          "n": 10,
+          "hata": 0,
+          "fp": 0
+        },
+        "p01-kupon": {
+          "n": 6,
+          "hata": 0,
+          "fp": 0
+        },
+        "p02-deneme-bonus": {
+          "n": 6,
+          "hata": 0,
+          "fp": 0
+        },
+        "p03-cevrimsiz-kayip": {
+          "n": 6,
+          "hata": 1,
+          "fp": 0
+        },
+        "p04-freespin-casino": {
+          "n": 6,
+          "hata": 0,
+          "fp": 0
+        },
+        "p05-telegram-vip": {
+          "n": 6,
+          "hata": 1,
+          "fp": 0
+        },
+        "p06-marka-kod-link": {
+          "n": 8,
+          "hata": 0,
+          "fp": 0
+        },
+        "p07-guncel-giris": {
+          "n": 8,
+          "hata": 0,
+          "fp": 0
+        },
+        "p08-casino-slot": {
+          "n": 7,
+          "hata": 0,
+          "fp": 0
+        },
+        "p09-dolayli-argo": {
+          "n": 7,
+          "hata": 2,
+          "fp": 0
+        },
+        "p10-canli-aciliyet": {
+          "n": 6,
+          "hata": 1,
+          "fp": 0
+        },
+        "p11-dekont-kanit": {
+          "n": 8,
+          "hata": 3,
+          "fp": 0
+        },
+        "p12-sansurlu": {
+          "n": 2,
+          "hata": 0,
+          "fp": 0
+        },
+        "p13-emoji-minimal": {
+          "n": 7,
+          "hata": 0,
+          "fp": 0
+        },
+        "p14-farkli-turler": {
+          "n": 9,
+          "hata": 4,
+          "fp": 0
+        },
+        "p15-odeme-vurgulu": {
+          "n": 7,
+          "hata": 1,
+          "fp": 0
+        },
+        "p16-influencer-kod": {
+          "n": 7,
+          "hata": 0,
+          "fp": 0
+        },
+        "p17-ing-tr-karisik": {
+          "n": 3,
+          "hata": 0,
+          "fp": 0
+        }
+      },
+      "hatalar": [
+        {
+          "text": "Seni Özledik! 2.500 TL Bonus",
+          "label": 1,
+          "kategori": "p-sikayet",
+          "skor": 0.642
+        },
+        {
+          "text": "nakit ve Bonus kazandınız",
+          "label": 1,
+          "kategori": "p-sikayet",
+          "skor": 0.682
+        },
+        {
+          "text": "hesabına bedava 300 TL yüklendi",
+          "label": 1,
+          "kategori": "p-sikayet",
+          "skor": 0.483
+        },
+        {
+          "text": "FreeSpin kazandınız",
+          "label": 1,
+          "kategori": "p-sikayet",
+          "skor": 0.654
+        },
+        {
+          "text": "Türkiye'nin en köklü ve en başarılı tahmin platformu tamamiyle ücretsiz. Yazarlarımızın tahmin ve yorumlarına bakmadan iddaa oynamayın.",
+          "label": 1,
+          "kategori": "p-telegram",
+          "skor": 0.502
+        },
+        {
+          "text": "-LAKEBAHIS lakede13temmuz https://lakegrs.link/lakegir",
+          "label": 1,
+          "kategori": "p-telegram",
+          "skor": 0.516
+        },
+        {
+          "text": "resmi yollardan düzenli olarak bahis oynuyorum. ne zaman kuponum yatsa bir kaç dakika içinde bu garabet sitelerden bana mesaj geliyor.",
+          "label": 0,
+          "kategori": "n-sikayet",
+          "skor": 0.907
+        },
+        {
+          "text": "Nakit iadeler hiçbir şart olmadan da çekilebilir",
+          "label": 1,
+          "kategori": "p03-cevrimsiz-kayip",
+          "skor": 0.373
+        },
+        {
+          "text": "1000x fırsatı kapında! Seçili oyunlarda 1000x sembolü yakala",
+          "label": 1,
+          "kategori": "p05-telegram-vip",
+          "skor": 0.529
+        },
+        {
+          "text": "Dünden wonlarımız 🔥🔥",
+          "label": 1,
+          "kategori": "p09-dolayli-argo",
+          "skor": 0.605
+        },
+        {
+          "text": "Bahisleri kaçırmayın",
+          "label": 1,
+          "kategori": "p09-dolayli-argo",
+          "skor": 0.62
+        },
+        {
+          "text": "Salı fırsatları seni bekliyor, bugün büyük kazanç için yeni fırsat!",
+          "label": 1,
+          "kategori": "p10-canli-aciliyet",
+          "skor": 0.614
+        },
+        {
+          "text": "Kazananlar kulübüne hoş geldin! Günün kombinesi yine hedefe ulaştı ✅",
+          "label": 1,
+          "kategori": "p11-dekont-kanit",
+          "skor": 0.357
+        },
+        {
+          "text": "3.000 yatırdım bakiye 354 bine çıktı, hâlâ inanamıyorum",
+          "label": 1,
+          "kategori": "p11-dekont-kanit",
+          "skor": 0.316
+        },
+        {
+          "text": "2/2 kazandık, akşam kuponu da geliyor takipte kalın",
+          "label": 1,
+          "kategori": "p11-dekont-kanit",
+          "skor": 0.682
+        },
+        {
+          "text": "Pazar poker turnuvasında dev ödül havuzu, koltuğunu ayırt.",
+          "label": 1,
+          "kategori": "p14-farkli-turler",
+          "skor": 0.676
+        },
+        {
+          "text": "Hızlı tombalada her 3 dakikada bir çekiliş, şanslı numaranı bul kazan.",
+          "label": 1,
+          "kategori": "p14-farkli-turler",
+          "skor": 0.576
+        },
+        {
+          "text": "Tombala kartların hazır mı? Çinko ve tombalayı kap, ikramiye senin.",
+          "label": 1,
+          "kategori": "p14-farkli-turler",
+          "skor": 0.356
+        },
+        {
+          "text": "Editör kuponuyla dün 40 bin kazandıran ekip bugün de sahada, takip et.",
+          "label": 1,
+          "kategori": "p14-farkli-turler",
+          "skor": 0.341
+        },
+        {
+          "text": "Yatırdığın para saniyeler içinde hesabına dönüyor",
+          "label": 1,
+          "kategori": "p15-odeme-vurgulu",
+          "skor": 0.477
+        }
+      ],
+      "terim_raporu": {
+        "kupon": {
+          "negatif": 5,
+          "fp": 1,
+          "pozitif": 13,
+          "fn": 2
+        },
+        "puan": {
+          "negatif": 3,
+          "fp": 0,
+          "pozitif": 1,
+          "fn": 0
+        },
+        "grup": {
+          "negatif": 3,
+          "fp": 0,
+          "pozitif": 0,
+          "fn": 0
+        },
+        "katıl": {
+          "negatif": 3,
+          "fp": 0,
+          "pozitif": 6,
+          "fn": 0
+        },
+        "katil": {
+          "negatif": 1,
+          "fp": 0,
+          "pozitif": 2,
+          "fn": 0
+        },
+        "tl": {
+          "negatif": 19,
+          "fp": 0,
+          "pozitif": 39,
+          "fn": 2
+        },
+        "link": {
+          "negatif": 0,
+          "fp": 0,
+          "pozitif": 6,
+          "fn": 1
+        },
+        "bonus": {
+          "negatif": 3,
+          "fp": 0,
+          "pozitif": 61,
+          "fn": 2
+        },
+        "kanal": {
+          "negatif": 0,
+          "fp": 0,
+          "pozitif": 13,
+          "fn": 0
+        },
+        "üye": {
+          "negatif": 4,
+          "fp": 0,
+          "pozitif": 16,
+          "fn": 0
+        },
+        "spin": {
+          "negatif": 0,
+          "fp": 0,
+          "pozitif": 21,
+          "fn": 1
+        },
+        "tombala": {
+          "negatif": 0,
+          "fp": 0,
+          "pozitif": 2,
+          "fn": 2
+        },
+        "poker": {
+          "negatif": 0,
+          "fp": 0,
+          "pozitif": 2,
+          "fn": 1
+        },
+        "papara": {
+          "negatif": 0,
+          "fp": 0,
+          "pozitif": 3,
+          "fn": 0
+        }
+      },
+      "gri_haric": 0
+    },
+    "kabul_saha.jsonl": {
+      "metrikler": {
+        "dogruluk": 0.9896,
+        "f1": 0.9655,
+        "yanlis_pozitif": 0,
+        "yanlis_negatif": 1,
+        "tuzak_fp": 0
+      },
+      "dilimler": {
+        "ebubekir-cihaz-fp": {
+          "n": 8,
+          "hata": 0,
+          "fp": 0
+        },
+        "saha-bagimlilik-uyari": {
+          "n": 5,
+          "hata": 0,
+          "fp": 0
+        },
+        "saha-cerez-izin": {
+          "n": 5,
+          "hata": 0,
+          "fp": 0
+        },
+        "saha-ciplak-url": {
+          "n": 5,
+          "hata": 0,
+          "fp": 0
+        },
+        "saha-erisim-engeli": {
+          "n": 5,
+          "hata": 0,
+          "fp": 0
+        },
+        "saha-form-kod-pdf-fp": {
+          "n": 7,
+          "hata": 0,
+          "fp": 0
+        },
+        "saha-form-riskli-karsit": {
+          "n": 2,
+          "hata": 0,
+          "fp": 0
+        },
+        "saha-haber-url-genel": {
+          "n": 5,
+          "hata": 0,
+          "fp": 0
+        },
+        "saha-haber-url-operasyon": {
+          "n": 5,
+          "hata": 0,
+          "fp": 0
+        },
+        "saha-haber-url-para": {
+          "n": 5,
+          "hata": 0,
+          "fp": 0
+        },
+        "saha-kumar-hakkinda-haber": {
+          "n": 5,
+          "hata": 0,
+          "fp": 0
+        },
+        "saha-linkedin-profil-fp": {
+          "n": 2,
+          "hata": 0,
+          "fp": 0
+        },
+        "saha-magdur-anlati": {
+          "n": 5,
+          "hata": 0,
+          "fp": 0
+        },
+        "saha-mesru-kampanya": {
+          "n": 4,
+          "hata": 0,
+          "fp": 0
+        },
+        "saha-meta-veri": {
+          "n": 4,
+          "hata": 0,
+          "fp": 0
+        },
+        "saha-urlli-tesvik": {
+          "n": 10,
+          "hata": 1,
+          "fp": 0
+        },
+        "saha-uyelik-kalip": {
+          "n": 5,
+          "hata": 0,
+          "fp": 0
+        },
+        "saha-whatsapp-riskli-karsit": {
+          "n": 2,
+          "hata": 0,
+          "fp": 0
+        },
+        "saha-whatsapp-sistem-fp": {
+          "n": 4,
+          "hata": 0,
+          "fp": 0
+        },
+        "saha-yemek-kuponu-fp": {
+          "n": 2,
+          "hata": 0,
+          "fp": 0
+        },
+        "saha-yemek-riskli-karsit": {
+          "n": 1,
+          "hata": 0,
+          "fp": 0
+        }
+      },
+      "hatalar": [
+        {
+          "text": "-BETMILYONER BETMİLYONERGELDİ24 https://tiklagit.net/betmilyoner",
+          "label": 1,
+          "kategori": "saha-urlli-tesvik",
+          "skor": 0.282
+        }
+      ],
+      "terim_raporu": {
+        "kupon": {
+          "negatif": 4,
+          "fp": 0,
+          "pozitif": 2,
+          "fn": 0
+        },
+        "puan": {
+          "negatif": 1,
+          "fp": 0,
+          "pozitif": 0,
+          "fn": 0
+        },
+        "grup": {
+          "negatif": 1,
+          "fp": 0,
+          "pozitif": 0,
+          "fn": 0
+        },
+        "katıl": {
+          "negatif": 3,
+          "fp": 0,
+          "pozitif": 1,
+          "fn": 0
+        },
+        "katil": {
+          "negatif": 1,
+          "fp": 0,
+          "pozitif": 1,
+          "fn": 0
+        },
+        "tl": {
+          "negatif": 5,
+          "fp": 0,
+          "pozitif": 2,
+          "fn": 0
+        },
+        "iban": {
+          "negatif": 1,
+          "fp": 0,
+          "pozitif": 0,
+          "fn": 0
+        },
+        "link": {
+          "negatif": 1,
+          "fp": 0,
+          "pozitif": 2,
+          "fn": 0
+        },
+        "bonus": {
+          "negatif": 0,
+          "fp": 0,
+          "pozitif": 3,
+          "fn": 0
+        },
+        "kanal": {
+          "negatif": 0,
+          "fp": 0,
+          "pozitif": 2,
+          "fn": 0
+        },
+        "üye": {
+          "negatif": 5,
+          "fp": 0,
+          "pozitif": 0,
+          "fn": 0
+        }
+      },
+      "gri_haric": 3,
+      "izleme_cekismeli_fp": 0,
+      "izleme_cekismeli_fp_orani": 0.0
+    }
+  }
+}

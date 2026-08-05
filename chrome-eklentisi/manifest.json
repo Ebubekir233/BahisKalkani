@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "permissions": ["storage"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "name": "Bahis Kalkanı - Chrome Eklentisi",
+  "version": "1.0",
+  "description": "Bahis içeriğini tespit edip kapatan koruma eklentisi",
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["detector.js", "content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

@@ -1,0 +1,342 @@
+{
+  "ham_ornek": 5654,
+  "cogaltilmis_egitim": 9602,
+  "dogrulama_ornek": 850,
+  "dogrulama_metrikleri": {
+    "acc": 0.9658823609352112,
+    "auc": 0.9958741068840027,
+    "duyarlilik": 0.9585798978805542,
+    "kesinlik": 0.9557521939277649,
+    "loss": 0.20769886672496796
+  },
+  "egitim_metrikleri": {
+    "acc": 1.0,
+    "auc": 1.0,
+    "duyarlilik": 1.0,
+    "kesinlik": 1.0,
+    "loss": 0.13411860167980194
+  },
+  "asiri_ogrenme_farki": 0.0341,
+  "dogrulama_hata_kaynaklari": {
+    "sentetik": 29
+  },
+  "kullanilan_ayarlar": {
+    "embed_dim": 32,
+    "filtreler": 160,
+    "cekirdekler": [
+      3,
+      4,
+      5
+    ],
+    "spatial_dropout": 0.1672598958793736,
+    "dropout1": 0.2911188196068541,
+    "dropout2": 0.10281290743799544,
+    "dense_birim": 64,
+    "l2": 1.5464846592020882e-05,
+    "lr": 0.001614547093879506,
+    "label_smoothing": 0.1,
+    "batch": 32,
+    "kayip": "bce",
+    "focal_gamma": 1.0671717698689442
+  },
+  "onerilen_esik": 0.7,
+  "esik_kaynagi": "insan kararı (esik_karari.json): 0.7 — otomatik öneri 0.62 idi",
+  "esik_float_onerisi": 0.62,
+  "kuantalama_sapmasi": 0.0059,
+  "recall_hedefi": 0.9,
+  "recall_kisiti_uygun": true,
+  "distilasyon": {
+    "aktif": true,
+    "alpha": 0.7,
+    "ogretmen": "ogretmen_v8.tflite",
+    "on_isleme": "v2 (ogretmen sozlugu)"
+  },
+  "tohum_secimi": {
+    "yontem": "5-uyeli topluluk ortalamasi (secim yok)",
+    "uyeler": [
+      {
+        "tohum": 42,
+        "val_acc": 0.9624,
+        "val_auc": 0.994,
+        "swa": {
+          "uygulandi": false,
+          "fiili_epoch": 31,
+          "pencere": null,
+          "val_auc_swa": 0.9929,
+          "val_auc_en_iyi": 0.994
+        }
+      },
+      {
+        "tohum": 133,
+        "val_acc": 0.9635,
+        "val_auc": 0.9941,
+        "swa": {
+          "uygulandi": false,
+          "fiili_epoch": 60,
+          "pencere": null,
+          "val_auc_swa": 0.994,
+          "val_auc_en_iyi": 0.9941
+        }
+      },
+      {
+        "tohum": 7,
+        "val_acc": 0.9647,
+        "val_auc": 0.9943,
+        "swa": {
+          "uygulandi": false,
+          "fiili_epoch": 55,
+          "pencere": null,
+          "val_auc_swa": 0.9941,
+          "val_auc_en_iyi": 0.9943
+        }
+      },
+      {
+        "tohum": 2025,
+        "val_acc": 0.9624,
+        "val_auc": 0.9945,
+        "swa": {
+          "uygulandi": false,
+          "fiili_epoch": 29,
+          "pencere": null,
+          "val_auc_swa": 0.9943,
+          "val_auc_en_iyi": 0.9945
+        }
+      },
+      {
+        "tohum": 777,
+        "val_acc": 0.9612,
+        "val_auc": 0.9945,
+        "swa": {
+          "uygulandi": false,
+          "fiili_epoch": 27,
+          "pencere": null,
+          "val_auc_swa": 0.9941,
+          "val_auc_en_iyi": 0.9945
+        }
+      }
+    ]
+  },
+  "sistem_esik_taramasi": [
+    {
+      "esik": 0.3,
+      "fp_orani": 0.05,
+      "fn_orani": 0.029,
+      "precision": 0.918
+    },
+    {
+      "esik": 0.32,
+      "fp_orani": 0.04,
+      "fn_orani": 0.029,
+      "precision": 0.934
+    },
+    {
+      "esik": 0.34,
+      "fp_orani": 0.026,
+      "fn_orani": 0.029,
+      "precision": 0.955
+    },
+    {
+      "esik": 0.36,
+      "fp_orani": 0.023,
+      "fn_orani": 0.029,
+      "precision": 0.96
+    },
+    {
+      "esik": 0.38,
+      "fp_orani": 0.02,
+      "fn_orani": 0.029,
+      "precision": 0.966
+    },
+    {
+      "esik": 0.4,
+      "fp_orani": 0.02,
+      "fn_orani": 0.029,
+      "precision": 0.966
+    },
+    {
+      "esik": 0.42,
+      "fp_orani": 0.013,
+      "fn_orani": 0.029,
+      "precision": 0.977
+    },
+    {
+      "esik": 0.44,
+      "fp_orani": 0.013,
+      "fn_orani": 0.04,
+      "precision": 0.977
+    },
+    {
+      "esik": 0.46,
+      "fp_orani": 0.013,
+      "fn_orani": 0.052,
+      "precision": 0.976
+    },
+    {
+      "esik": 0.48,
+      "fp_orani": 0.013,
+      "fn_orani": 0.052,
+      "precision": 0.976
+    },
+    {
+      "esik": 0.5,
+      "fp_orani": 0.013,
+      "fn_orani": 0.057,
+      "precision": 0.976
+    },
+    {
+      "esik": 0.52,
+      "fp_orani": 0.013,
+      "fn_orani": 0.063,
+      "precision": 0.976
+    },
+    {
+      "esik": 0.54,
+      "fp_orani": 0.013,
+      "fn_orani": 0.075,
+      "precision": 0.976
+    },
+    {
+      "esik": 0.56,
+      "fp_orani": 0.013,
+      "fn_orani": 0.08,
+      "precision": 0.976
+    },
+    {
+      "esik": 0.58,
+      "fp_orani": 0.013,
+      "fn_orani": 0.086,
+      "precision": 0.975
+    },
+    {
+      "esik": 0.6,
+      "fp_orani": 0.01,
+      "fn_orani": 0.098,
+      "precision": 0.981
+    },
+    {
+      "esik": 0.62,
+      "fp_orani": 0.01,
+      "fn_orani": 0.098,
+      "precision": 0.981
+    },
+    {
+      "esik": 0.64,
+      "fp_orani": 0.01,
+      "fn_orani": 0.103,
+      "precision": 0.981
+    },
+    {
+      "esik": 0.66,
+      "fp_orani": 0.01,
+      "fn_orani": 0.109,
+      "precision": 0.981
+    },
+    {
+      "esik": 0.68,
+      "fp_orani": 0.01,
+      "fn_orani": 0.109,
+      "precision": 0.981
+    },
+    {
+      "esik": 0.7,
+      "fp_orani": 0.01,
+      "fn_orani": 0.121,
+      "precision": 0.981
+    },
+    {
+      "esik": 0.72,
+      "fp_orani": 0.01,
+      "fn_orani": 0.121,
+      "precision": 0.981
+    },
+    {
+      "esik": 0.74,
+      "fp_orani": 0.01,
+      "fn_orani": 0.132,
+      "precision": 0.981
+    },
+    {
+      "esik": 0.76,
+      "fp_orani": 0.01,
+      "fn_orani": 0.144,
+      "precision": 0.98
+    },
+    {
+      "esik": 0.78,
+      "fp_orani": 0.01,
+      "fn_orani": 0.172,
+      "precision": 0.98
+    },
+    {
+      "esik": 0.8,
+      "fp_orani": 0.01,
+      "fn_orani": 0.184,
+      "precision": 0.979
+    },
+    {
+      "esik": 0.82,
+      "fp_orani": 0.007,
+      "fn_orani": 0.213,
+      "precision": 0.986
+    },
+    {
+      "esik": 0.84,
+      "fp_orani": 0.003,
+      "fn_orani": 0.236,
+      "precision": 0.993
+    },
+    {
+      "esik": 0.86,
+      "fp_orani": 0.0,
+      "fn_orani": 0.253,
+      "precision": 1.0
+    },
+    {
+      "esik": 0.88,
+      "fp_orani": 0.0,
+      "fn_orani": 0.282,
+      "precision": 1.0
+    },
+    {
+      "esik": 0.9,
+      "fp_orani": 0.0,
+      "fn_orani": 0.328,
+      "precision": 1.0
+    },
+    {
+      "esik": 0.92,
+      "fp_orani": 0.0,
+      "fn_orani": 0.414,
+      "precision": 1.0
+    },
+    {
+      "esik": 0.94,
+      "fp_orani": 0.0,
+      "fn_orani": 0.563,
+      "precision": 1.0
+    },
+    {
+      "esik": 0.96,
+      "fp_orani": 0.0,
+      "fn_orani": 0.724,
+      "precision": 1.0
+    },
+    {
+      "esik": 0.98,
+      "fp_orani": 0.0,
+      "fn_orani": 0.833,
+      "precision": 1.0
+    },
+    {
+      "esik": 1.0,
+      "fp_orani": 0.0,
+      "fn_orani": 0.839,
+      "precision": 1.0
+    }
+  ],
+  "on_isleme_surumu": 3,
+  "sozluk_boyutu": 98,
+  "veri_parmak_izi": "9ef893bf46be",
+  "duman_testi": false,
+  "tflite_kb": 534.4
+}

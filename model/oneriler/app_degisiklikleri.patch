@@ -1,0 +1,358 @@
+diff --git a/app/src/main/assets/keywords.json b/app/src/main/assets/keywords.json
+index 2c5463f..747efa6 100644
+--- a/app/src/main/assets/keywords.json
++++ b/app/src/main/assets/keywords.json
+@@ -1,12 +1,25 @@
+ {
+-  "version": 3,
+-  "aciklama": "kesin: tek başına engelleme sebebi (Android + Chrome). genel: Chrome'da engelleme sebebi; Android'de karar TFLite modeline bırakılır — model haber/şikayet metinlerini teşvikten ayırt edebiliyor, çıplak terimler haberleri de kapatıyordu. ignored: eşleşmeden önce metinden çıkarılır.",
++  "version": 4,
++  "aciklama": "kesin: tek basina engelleme sebebi. kesin_regex: ayirt edici kombinasyonlar; masum kupon/form dilini kapatmadan kisa spam ve site/link pozitiflerini yakalar. genel: Chrome'da engelleme sebebi; Android'de karar TFLite modeline birakilir. ignored: eslesmeden once metinden cikarilir.",
+   "kesin": [
+     "deneme bonusu",
+-    "çevrimsiz bonus",
++    "cevrimsiz bonus",
+     "free spin",
++    "freespin",
+     "freebet",
+-    "canlı bahis"
++    "bahis grubu",
++    "bahis kanali",
++    "kupon kanali",
++    "canli bahis"
++  ],
++  "kesin_regex": [
++    "\\b(hesap\\s*ac|uye\\s*ol|kayit\\s*ol)\\b.{0,40}\\b(bonus|freebet|freespin|free\\s*spin)\\b",
++    "\\b(seni\\s*ozledik|hediyeniz|hediyen|hesabina|hesabinizda)\\b.{0,40}\\b(bonus|freebet|freespin|free\\s*spin|oynamaya\\s*basla)\\b",
++    "\\b(bet|bahis|casino|slot)[a-z0-9]{2,}\\b.{0,60}\\b(http|www|link|giris|guncel|bonus|fs|freebet|freespin)\\b",
++    "\\b[a-z0-9]{3,}(bet|bahis|casino)[a-z0-9]*\\b.{0,60}\\b(http|www|link|giris|guncel|bonus|fs)\\b",
++    "\\b(poker|tombala|ganyan|altili\\s*ganyan|rulet|slot)\\b.{0,40}\\b(odul|ikramiye|kazan|turnuva|kupon|banko|oyna)\\b",
++    "\\b(oran|kupon|banko)\\b.{0,40}\\b(kanal|grup|telegram|dm|takip|gel)\\b",
++    "\\b(kanal|grup|telegram|dm|takip|gel)\\b.{0,40}\\b(oran|kupon|banko)\\b"
+   ],
+   "genel": [
+     "bahis",
+@@ -18,9 +31,7 @@
+     "jackpot"
+   ],
+   "ignored": [
+-    "bahiskalkanı",
+     "bahiskalkani",
+-    "bahis kalkanı",
+     "bahis kalkani"
+   ]
+ }
+diff --git a/app/src/main/java/com/teknofest/bahiskalkani/detection/KeywordDetector.kt b/app/src/main/java/com/teknofest/bahiskalkani/detection/KeywordDetector.kt
+index 6740024..19c9c1b 100644
+--- a/app/src/main/java/com/teknofest/bahiskalkani/detection/KeywordDetector.kt
++++ b/app/src/main/java/com/teknofest/bahiskalkani/detection/KeywordDetector.kt
+@@ -22,20 +22,22 @@ import java.util.Locale
+  */
+ class KeywordDetector(
+     keywords: List<String>,
++    keywordPatterns: List<String> = emptyList(),
+     ignoredPhrases: List<String> = emptyList(),
+ ) : Detector {
+ 
+     private val turkish = Locale.forLanguageTag("tr")
+-    private val keywords = keywords.map { it.lowercase(turkish) }
+-    private val ignoredPhrases = ignoredPhrases.map { it.lowercase(turkish) }
++    private val keywords = keywords.map { normalizeForMatching(it) }
++    private val keywordPatterns = keywordPatterns.map { Regex(it) }
++    private val ignoredPhrases = ignoredPhrases.map { normalizeForMatching(it) }
+ 
+     override fun isBettingContent(text: String): Boolean {
+-        var lower = text.lowercase(turkish)
++        var normalized = normalizeForMatching(text)
+         for (phrase in ignoredPhrases) {
+-            lower = lower.replace(phrase, "")
++            normalized = normalized.replace(phrase, "")
+         }
+-        val normalized = normalizeCensoredChars(lower)
+-        return keywords.any { normalized.contains(it) }
++        return keywords.any { normalized.contains(it) } ||
++            keywordPatterns.any { it.containsMatchIn(normalized) }
+     }
+ 
+     /**
+@@ -44,10 +46,13 @@ class KeywordDetector(
+      * Daha karmaşık varyasyonlar (boşluklu yazım, yeni argo) Faz 2 modelinin işi
+      * — bkz. MODEL_ENTEGRASYON.md.
+      */
+-    private fun normalizeCensoredChars(text: String): String =
+-        buildString(text.length) {
+-            for (c in text) append(CENSOR_SUBSTITUTIONS[c] ?: c)
+-        }
++    private fun normalizeForMatching(text: String): String {
++        val lower = text.lowercase(turkish)
++            .replace("\u0307", "")
++        return buildString(lower.length) {
++            for (c in lower) append(ASCII_FOLD[CENSOR_SUBSTITUTIONS[c] ?: c] ?: (CENSOR_SUBSTITUTIONS[c] ?: c))
++        }.replace(Regex("\\s+"), " ").trim()
++    }
+ 
+     companion object {
+         private val CENSOR_SUBSTITUTIONS = mapOf(
+@@ -60,6 +65,14 @@ class KeywordDetector(
+             '@' to 'a',
+             '$' to 's',
+         )
++        private val ASCII_FOLD = mapOf(
++            'ç' to 'c',
++            'ğ' to 'g',
++            'ı' to 'i',
++            'ö' to 'o',
++            'ş' to 's',
++            'ü' to 'u',
++        )
+ 
+         fun fromAssets(context: Context): KeywordDetector {
+             val json = JSONObject(
+@@ -71,6 +84,7 @@ class KeywordDetector(
+             // yok) kesin + genel listelerinin İKİSİNİ de kullanır.
+             return KeywordDetector(
+                 keywords = json.getJSONArray("kesin").toStringList(),
++                keywordPatterns = json.optJSONArray("kesin_regex")?.toStringList() ?: emptyList(),
+                 ignoredPhrases = json.optJSONArray("ignored")?.toStringList() ?: emptyList(),
+             )
+         }
+diff --git a/app/src/main/java/com/teknofest/bahiskalkani/detection/TfLiteDetector.kt b/app/src/main/java/com/teknofest/bahiskalkani/detection/TfLiteDetector.kt
+index 1a55b8a..1f45cb3 100644
+--- a/app/src/main/java/com/teknofest/bahiskalkani/detection/TfLiteDetector.kt
++++ b/app/src/main/java/com/teknofest/bahiskalkani/detection/TfLiteDetector.kt
+@@ -41,11 +41,21 @@ class TfLiteDetector(
+     private val output = Array(1) { FloatArray(1) }
+ 
+     override fun isBettingContent(text: String): Boolean {
+-        if (isMetadata(text)) return false                       // katman 3
++        val score = scoreOrNull(text) ?: return false
++        return score >= threshold
++    }
++
++    /**
++     * Model skoru üretir; v2'nin ucuz kapıları metni temiz sayarsa null döner.
++     * ScreenReaderService bu sayede aynı URL/meta kapılarını koruyarak paket
++     * bazlı eşik uygulayabilir.
++     */
++    fun scoreOrNull(text: String): Float? {
++        if (isMetadata(text)) return null                         // katman 3
+         val normalized = normalizeUrls(Normalizer.normalize(text, Normalizer.Form.NFC))
+         val kalan = normalized.replace(URL_TOKEN, " ").trim()
+-        if (kalan.length < 3) return false                       // katman 2 (çıplak URL)
+-        return score(normalized) >= threshold
++        if (kalan.length < 3) return null                         // katman 2 (çıplak URL)
++        return score(normalized)
+     }
+ 
+     /** 0..1 arası teşvik skoru — eşik kalibrasyonu ve hata ayıklama için açık.
+diff --git a/app/src/main/java/com/teknofest/bahiskalkani/service/ScreenReaderService.kt b/app/src/main/java/com/teknofest/bahiskalkani/service/ScreenReaderService.kt
+index 2f82340..ed05274 100644
+--- a/app/src/main/java/com/teknofest/bahiskalkani/service/ScreenReaderService.kt
++++ b/app/src/main/java/com/teknofest/bahiskalkani/service/ScreenReaderService.kt
+@@ -8,8 +8,9 @@ import android.util.Log
+ import android.view.accessibility.AccessibilityEvent
+ import android.view.accessibility.AccessibilityNodeInfo
+ import com.teknofest.bahiskalkani.BuildConfig
+-import com.teknofest.bahiskalkani.detection.Detector
+ import com.teknofest.bahiskalkani.detection.KeywordDetector
++import com.teknofest.bahiskalkani.detection.SurfaceContext
++import com.teknofest.bahiskalkani.detection.SurfaceGuard
+ import com.teknofest.bahiskalkani.detection.TfLiteDetector
+ import com.teknofest.bahiskalkani.overlay.CoverTarget
+ import com.teknofest.bahiskalkani.overlay.OverlayController
+@@ -19,8 +20,10 @@ class ScreenReaderService : AccessibilityService() {
+ 
+     // Faz 1 kelime listesi + Faz 2 TFLite modeli birlikte çalışır:
+     // ikisinden biri "evet" derse içerik engellenir (liste güvenlik ağı).
+-    private lateinit var detector: Detector
++    private lateinit var keywordDetector: KeywordDetector
++    private lateinit var modelDetector: TfLiteDetector
+     private lateinit var overlay: OverlayController
++    private val surfaceGuard = SurfaceGuard()
+ 
+     // "Yine de göster" denilen içerikler; KVKK gereği yalnızca bellekte
+     // hash olarak tutulur, servis yeniden başlayınca sıfırlanır.
+@@ -54,18 +57,11 @@ class ScreenReaderService : AccessibilityService() {
+             PackageManager.MATCH_DEFAULT_ONLY,
+         )?.activityInfo?.packageName?.let { skippedPackages.add(it) }
+ 
+-        val keyword = KeywordDetector.fromAssets(this)
+-        val model = TfLiteDetector.fromAssets(this)
+-        // Ucuz kontrol önde: kelime listesi eşleşirse model hiç çağrılmaz.
+-        // Model yalnızca yeterince uzun metinlerde çalışır: "Kanal23 · 4g"
+-        // gibi kısa kaynak etiketlerinde bağlam yok, model yanılıyor
+-        // ("kanal" kelimesini Telegram davetlerinden teşvik sinyali öğrendi).
+-        // Çıplak URL kapısı ve meta-veri süzgeci artık TfLiteDetector'ın
+-        // İÇİNDE (v2); serviste yalnızca kısa metin muafiyeti kaldı.
+-        detector = Detector { text ->
+-            keyword.isBettingContent(text) ||
+-                (text.length >= MODEL_MIN_CHARS && model.isBettingContent(text))
+-        }
++        keywordDetector = KeywordDetector.fromAssets(this)
++        modelDetector = TfLiteDetector.fromAssets(this)
++        // Karar sirasi scan() icinde: kesin kelime -> kisa metin -> yuzey
++        // kapisi -> model skoru. SurfaceGuard yalnizca modeli atlar; kesin
++        // bahis ifadelerini muaf tutmaz.
+         overlay = OverlayController(
+             this,
+             onShowAnyway = { target -> allowedHashes.add(target.textHash) },
+@@ -99,7 +95,12 @@ class ScreenReaderService : AccessibilityService() {
+             return
+         }
+         val targets = mutableListOf<CoverTarget>()
+-        scan(root, targets)
++        val surfaceContext = SurfaceContext(
++            packageName = rootPackage,
++            rootClassName = root.className?.toString(),
++            eventType = event.eventType,
++        )
++        scan(root, targets, surfaceContext)
+         overlay.update(targets)
+     }
+ 
+@@ -117,7 +118,11 @@ class ScreenReaderService : AccessibilityService() {
+      * koordinatlarını toplar. KVKK: metinler yalnızca bellekte işlenir,
+      * kaydedilmez, cihaz dışına çıkmaz.
+      */
+-    private fun scan(node: AccessibilityNodeInfo, out: MutableList<CoverTarget>) {
++    private fun scan(
++        node: AccessibilityNodeInfo,
++        out: MutableList<CoverTarget>,
++        surfaceContext: SurfaceContext,
++    ) {
+         // Kullanıcının kendi yazı alanlarını (arama kutusu vb.) kapatma:
+         // kendi yazdığı metin "bahse teşvik eden içerik" değildir ve kutu
+         // kapanırsa yazdığını göremez
+@@ -131,9 +136,13 @@ class ScreenReaderService : AccessibilityService() {
+         val text = node.text?.toString() ?: ""
+         if (text.isNotBlank()) {
+             val hash = text.hashCode()
+-            val isBetting = decisionCache.getOrPut(hash) { detector.isBettingContent(text) }
++            val nodeContext = surfaceContext.copy(nodeClassName = node.className?.toString())
++            val cacheKey = surfaceGuard.decisionCacheKey(text, nodeContext)
++            val isBetting = decisionCache.getOrPut(cacheKey) {
++                isBettingContent(text, nodeContext)
++            }
+             if (!isBetting) {
+-                scanChildren(node, out)
++                scanChildren(node, out, surfaceContext)
+                 return
+             }
+             if (hash !in allowedHashes) {
+@@ -152,16 +161,28 @@ class ScreenReaderService : AccessibilityService() {
+             // Eşleşen düğümün altına inmeye gerek yok, tamamı kapanacak
+             return
+         }
+-        scanChildren(node, out)
++        scanChildren(node, out, surfaceContext)
+     }
+ 
+-    private fun scanChildren(node: AccessibilityNodeInfo, out: MutableList<CoverTarget>) {
++    private fun scanChildren(
++        node: AccessibilityNodeInfo,
++        out: MutableList<CoverTarget>,
++        surfaceContext: SurfaceContext,
++    ) {
+         for (i in 0 until node.childCount) {
+             val child = node.getChild(i) ?: continue
+-            scan(child, out)
++            scan(child, out, surfaceContext)
+         }
+     }
+ 
++    private fun isBettingContent(text: String, context: SurfaceContext): Boolean {
++        if (keywordDetector.isBettingContent(text)) return true
++        if (text.length < MODEL_MIN_CHARS) return false
++        if (surfaceGuard.shouldBypassModel(text, context)) return false
++        val score = modelDetector.scoreOrNull(text) ?: return false
++        return score >= surfaceGuard.thresholdFor(text, context)
++    }
++
+     private companion object {
+         const val TAG = "BahisKalkani"
+ 
+diff --git a/app/src/test/java/com/teknofest/bahiskalkani/detection/KeywordDetectorTest.kt b/app/src/test/java/com/teknofest/bahiskalkani/detection/KeywordDetectorTest.kt
+index b9d2579..8d3c86f 100644
+--- a/app/src/test/java/com/teknofest/bahiskalkani/detection/KeywordDetectorTest.kt
++++ b/app/src/test/java/com/teknofest/bahiskalkani/detection/KeywordDetectorTest.kt
+@@ -6,33 +6,36 @@ import org.junit.Test
+ 
+ class KeywordDetectorTest {
+ 
+-    // assets/keywords.json ile aynı mantık; testler eşleşme davranışını sınar
+     private val detector = KeywordDetector(
+-        listOf("bahis", "iddaa", "casino", "çevrimsiz bonus"),
++        keywords = listOf("bahis", "iddaa", "casino", "cevrimsiz bonus"),
++        keywordPatterns = listOf(
++            "\\b(hesap\\s*ac|uye\\s*ol)\\b.{0,40}\\b(bonus|freebet|freespin)\\b",
++            "\\b(bet|bahis|casino)[a-z0-9]{2,}\\b.{0,60}\\b(http|link|giris|bonus)\\b",
++        ),
+     )
+ 
+     @Test
+     fun `bahis kelimesini yakalar`() {
+-        assertTrue(detector.isBettingContent("Canlı bahis oranları burada"))
++        assertTrue(detector.isBettingContent("Canli bahis oranlari burada"))
+     }
+ 
+     @Test
+     fun `buyuk harf ve Turkce karakterlerle yakalar`() {
+-        assertTrue(detector.isBettingContent("BAHİS SİTESİ"))
+-        assertTrue(detector.isBettingContent("Çevrimsiz Bonus fırsatı"))
++        assertTrue(detector.isBettingContent("BAHIS SITESI"))
++        assertTrue(detector.isBettingContent("Cevrimsiz Bonus firsati"))
+     }
+ 
+     @Test
+     fun `kelime turevlerini yakalar`() {
+-        assertTrue(detector.isBettingContent("1xbahis giriş"))
++        assertTrue(detector.isBettingContent("1xbahis giris"))
+         assertTrue(detector.isBettingContent("casinolar listesi"))
+     }
+ 
+     @Test
+     fun `masum metni isaretlemez`() {
+-        assertFalse(detector.isBettingContent("Bugün hava çok güzel"))
+-        assertFalse(detector.isBettingContent("Alfabetik sıralama"))
+-        assertFalse(detector.isBettingContent("Betül ile buluşma"))
++        assertFalse(detector.isBettingContent("Bugun hava cok guzel"))
++        assertFalse(detector.isBettingContent("Alfabetik siralama"))
++        assertFalse(detector.isBettingContent("Betul ile bulusma"))
+     }
+ 
+     @Test
+@@ -43,21 +46,25 @@ class KeywordDetectorTest {
+     @Test
+     fun `sansurlu varyasyonlari yakalar`() {
+         assertTrue(detector.isBettingContent("b4his siteleri"))
+-        assertTrue(detector.isBettingContent("ç3vrimsiz b0nus fırsatı"))
+-        assertTrue(detector.isBettingContent("c@sino oyunları"))
++        assertTrue(detector.isBettingContent("c3vrimsiz b0nus firsati"))
++        assertTrue(detector.isBettingContent("c@sino oyunlari"))
+     }
+ 
+     @Test
+     fun `muaf ifadeleri isaretlemez`() {
+         val d = KeywordDetector(
+             keywords = listOf("bahis"),
+-            ignoredPhrases = listOf("bahiskalkanı", "bahis kalkanı"),
++            ignoredPhrases = listOf("bahiskalkani", "bahis kalkani"),
+         )
+-        // Uygulamanın kendi adı launcher/ayarlar ekranlarında görünür;
+-        // kalkanı tetiklememeli
+-        assertFalse(d.isBettingContent("BahisKalkanı"))
+-        assertFalse(d.isBettingContent("BahisKalkanı ayarları"))
+-        // Muaf ifade geçse bile gerçek bahis içeriği yakalanmalı
+-        assertTrue(d.isBettingContent("BahisKalkanı canlı bahis sitesini engelledi"))
++        assertFalse(d.isBettingContent("BahisKalkani"))
++        assertFalse(d.isBettingContent("BahisKalkani ayarlari"))
++        assertTrue(d.isBettingContent("BahisKalkani canli bahis sitesini engelledi"))
++    }
++
++    @Test
++    fun `kesin regex kisa spam ve site linklerini yakalar`() {
++        assertTrue(detector.isBettingContent("hesap ac 500 TL Bonus"))
++        assertTrue(detector.isBettingContent("MAVIBET guncel giris linki"))
++        assertFalse(detector.isBettingContent("Market alisverisinde 50 TL kupon kodun hazir"))
+     }
+ }

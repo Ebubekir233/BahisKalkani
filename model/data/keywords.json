@@ -1,0 +1,26 @@
+{
+  "version": 3,
+  "aciklama": "kesin: tek başına engelleme sebebi (Android + Chrome). genel: Chrome'da engelleme sebebi; Android'de karar TFLite modeline bırakılır — model haber/şikayet metinlerini teşvikten ayırt edebiliyor, çıplak terimler haberleri de kapatıyordu. ignored: eşleşmeden önce metinden çıkarılır.",
+  "kesin": [
+    "deneme bonusu",
+    "çevrimsiz bonus",
+    "free spin",
+    "freebet",
+    "canlı bahis"
+  ],
+  "genel": [
+    "bahis",
+    "iddaa",
+    "casino",
+    "kazino",
+    "kumar",
+    "rulet",
+    "jackpot"
+  ],
+  "ignored": [
+    "bahiskalkanı",
+    "bahiskalkani",
+    "bahis kalkanı",
+    "bahis kalkani"
+  ]
+}

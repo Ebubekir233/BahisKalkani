@@ -1,0 +1,17 @@
+{
+  "esik": 0.70,
+  "gerekce": "KALICI İNSAN KARARI (18 Tem, v10.4 koşu-3 artefaktı): iki BAĞIMSIZ artefaktta (koşu-1 v10.3 ve koşu-3 v10.4) 0.70-0.90 eşik penceresi kapının üç koşulunu da geçti; tek bildirilen engel (forum üyelik kalıbı) iki cerrahi veri turuna rağmen 0.690→0.693'te sabit kaldı — bağlam işi, model işi değil (forum yüzeyi SurfaceGuard/yüzey kapısıyla korunur). 0.70 = pencerenin recall-dostu ucu; v8 'nadir-pozitif dağılımda precision öncelikli' doktrinine uygun. Maliyet (koşu-3): kalibrasyon sistem recall 0.902→0.879, gerçek-391 recall %91.7→%88.8 (kaçanlar 0.60-0.68 bandı sınır örnekleri). Otomatik öneri 0.62 idi.",
+  "tarihce": [
+    {
+      "esik": 0.70,
+      "surum": "v10.3 deneme (koşu-2)",
+      "not": "Koşu-1 artefaktında 0.70-0.90 penceresi kapının üç koşulunu da geçiyordu; 0.70 denemesi koşu-2'de sınandı (kullanıcı beklenen çıktıyı teyit etti, artefakt arşivlenmedi). v10.4 verisi kök nedeni çözmeyi hedeflediği için karar kalıcılaştırılmadı."
+    },
+    {
+      "esik": 0.60,
+      "surum": "v8",
+      "not": "v8 artefaktı için geçerliydi — sistem FP dizininden (knee) insan kararı; @0.60 sözleşme %99, gerçek-391 %94.4, bildirilen 0 FP, INV 0"
+    }
+  ],
+  "not": "esik=null → train.py otomatik (recall-kısıtlı, kuantalı-TFLite) seçimi kullanır. Sayı yazılırsa otomatiği ezer. Kotlin VARSAYILAN_ESIK nihai karardan sonra eşitlenir (şu an 0.60, v8 değeri)."
+}

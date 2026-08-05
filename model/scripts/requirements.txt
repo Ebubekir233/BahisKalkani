@@ -1,0 +1,3 @@
+tensorflow>=2.17,<3
+numpy
+optuna>=3          # yalnızca isteğe bağlı ayarla.py (hiperparametre araması) için
