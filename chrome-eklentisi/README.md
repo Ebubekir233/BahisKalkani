@@ -4,7 +4,7 @@ TEKNOFEST 2026 "Bağımlılıklarla Mücadelede Teknolojik Uygulamalar" projesi
 Bahis Kalkanı'nın tarayıcı bileşeni. Web sayfalarındaki bahis-teşvik
 içeriğini cihaz üzerinde tespit edip kullanıcıya ulaşmadan kapatır.
 
-Android uygulamasının tarayıcı karşılığıdır; tespit mantığı ve kelime listesi Android tarafıyla
+Android uygulamasının tarayıcı karşılığı; tespit mantığı ve kelime listesi Android tarafıyla
 eşdeğer tutulur. Geliştirici: **Aylin Akagündüz**.
 
 ---
