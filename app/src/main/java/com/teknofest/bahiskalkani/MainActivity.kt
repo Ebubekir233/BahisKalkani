@@ -37,6 +37,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.teknofest.bahiskalkani.demo.DemoFeedActivity
 import com.teknofest.bahiskalkani.service.ScreenReaderService
 import com.teknofest.bahiskalkani.stats.BlockStats
 import com.teknofest.bahiskalkani.ui.theme.BahisKalkaniTheme
@@ -56,6 +57,9 @@ class MainActivity : ComponentActivity() {
                         blockedCount = BlockStats.blockedCount,
                         onOpenSettings = {
                             startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
+                        },
+                        onOpenDemo = {
+                            startActivity(Intent(this, DemoFeedActivity::class.java))
                         },
                         modifier = Modifier.padding(innerPadding),
                     )
@@ -85,6 +89,7 @@ fun MainScreen(
     blockedCount: Int,
     onOpenSettings: () -> Unit,
     modifier: Modifier = Modifier,
+    onOpenDemo: () -> Unit = {},
 ) {
     Column(
         modifier = modifier
@@ -96,6 +101,10 @@ fun MainScreen(
         Header()
         StatusCard(serviceEnabled = serviceEnabled, onOpenSettings = onOpenSettings)
         CounterCard(blockedCount = blockedCount)
+        // Jüri demosu: yerleşik akışı açar (kalkan açıkken bahis kartları kapanır)
+        OutlinedButton(onClick = onOpenDemo, modifier = Modifier.fillMaxWidth()) {
+            Text("📱 Demo akışını aç")
+        }
         HowItWorksCard()
         PrivacyNote()
     }

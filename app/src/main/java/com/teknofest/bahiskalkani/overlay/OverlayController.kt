@@ -45,19 +45,19 @@ class OverlayController(
     fun update(targets: List<CoverTarget>) {
         val wantedKeys = targets.mapTo(mutableSetOf()) { it.key }
         covers.keys.filter { it !in wantedKeys }.forEach(::removeCover)
-        var newCoverAdded = false
+        val newBounds = mutableListOf<Rect>()
         for (target in targets) {
             val existing = covers[target.key]
             when {
                 existing == null -> {
                     addCover(target)
-                    newCoverAdded = true
+                    newBounds.add(target.bounds)
                 }
                 existing.target.bounds != target.bounds -> moveCover(existing, target)
             }
         }
         updateChip()
-        if (newCoverAdded) restackTouchables()
+        if (newBounds.isNotEmpty()) restackTouchables(newBounds)
     }
 
     /**
@@ -67,12 +67,16 @@ class OverlayController(
      * alttaki uygulamaya gidiyor. Bu yüzden her yeni kapaktan sonra
      * dokunulabilir pencereler en üste yeniden dizilir.
      */
-    private fun restackTouchables() {
+    private fun restackTouchables(newBounds: List<Rect>) {
+        // Yalnız yeni kapakla ÇAKIŞAN eski butonlar yeniden dizilir: kaydırmada
+        // her yeni kapakta tüm butonları silip eklemek takılmaya yol açıyordu.
+        // Yeni kapağın kendi butonu zaten kendi kapağından sonra eklendi.
         for (cover in covers.values) {
-            cover.button?.let {
-                windowManager.removeView(it)
-                windowManager.addView(it, buttonParams(it, cover.target.bounds))
-            }
+            val button = cover.button ?: continue
+            val b = cover.target.bounds
+            if (newBounds.none { it !== b && Rect.intersects(it, b) }) continue
+            windowManager.removeView(button)
+            windowManager.addView(button, buttonParams(button, b))
         }
         chip?.let {
             windowManager.removeView(it)

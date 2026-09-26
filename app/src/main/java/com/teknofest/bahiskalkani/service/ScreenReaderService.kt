@@ -6,10 +6,12 @@ import android.content.pm.PackageManager
 import android.graphics.Rect
 import android.os.Handler
 import android.os.Looper
+import android.os.SystemClock
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import com.teknofest.bahiskalkani.BuildConfig
+import com.teknofest.bahiskalkani.demo.DemoState
 import com.teknofest.bahiskalkani.detection.KeywordDetector
 import com.teknofest.bahiskalkani.detection.SurfaceContext
 import com.teknofest.bahiskalkani.detection.SurfaceGuard
@@ -39,6 +41,10 @@ class ScreenReaderService : AccessibilityService() {
 
     private val handler = Handler(Looper.getMainLooper())
     private val scanRunnable = Runnable { runScan() }
+
+    // Kaydırma hızlı yolu: son taramanın zamanı ve bekleyen hızlı tarama
+    private var lastScanAt = 0L
+    private var fastScanPending = false
 
     // Hiç taranmayacak paketler; launcher onServiceConnected'da eklenir
     private val skippedPackages = mutableSetOf(
@@ -72,6 +78,13 @@ class ScreenReaderService : AccessibilityService() {
             onShowAnyway = { target -> allowedHashes.add(target.textHash) },
             onShowAnywayAll = { targets -> targets.forEach { allowedHashes.add(it.textHash) } },
         )
+        // Demo akışından çıkılınca kapaklar kendi ekranımızda (ana ekran)
+        // asılı kalmasın: demo kapanırken bir kez temizlenir
+        DemoState.demoKapandi = {
+            handler.removeCallbacks(scanRunnable)
+            fastScanPending = false
+            overlay.clear()
+        }
         Log.i(TAG, "Erişilebilirlik servisi bağlandı")
     }
 
@@ -82,17 +95,39 @@ class ScreenReaderService : AccessibilityService() {
         ) {
             return
         }
-        // Kendi overlay pencerelerimizin ürettiği olaylarla uğraşma
-        if (event.packageName == packageName) return
+        // Kendi overlay pencerelerimizin ürettiği olaylarla uğraşma.
+        // İstisna: yerleşik demo akışı (DemoFeedActivity) açıkken kendi
+        // paketimiz taranır; kapaklarımızın içerik olayları döngü
+        // yaratmasın diye orada yalnız kaydırma/ekran değişimi tetikler.
+        if (event.packageName == packageName) {
+            if (!DemoState.gorunur) return
+            if (event.eventType == AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED) return
+        }
 
         // Olay fırtınası sönümleme: sayfa geçişlerinde onlarca olay art arda
         // gelir; her biri için tam ağaç taraması yapmak tepki süresini
         // dalgalandırıyor. Fırtına durulunca TEK tarama yapılır.
+        //
+        // Kaydırma olayı istisna: sönümleme beklenirse kapaklar içeriğin
+        // gerisinde kalıyor. Kaydırmada tarama hemen yapılır (en fazla
+        // SCROLL_MIN_INTERVAL_MS'de bir); bekleyen hızlı tarama varken gelen
+        // diğer olaylar onu ertelemez, o tarama zaten onları da kapsar.
+        if (event.eventType == AccessibilityEvent.TYPE_VIEW_SCROLLED) {
+            val bekle = (lastScanAt + SCROLL_MIN_INTERVAL_MS - SystemClock.uptimeMillis())
+                .coerceAtLeast(0L)
+            handler.removeCallbacks(scanRunnable)
+            fastScanPending = true
+            handler.postDelayed(scanRunnable, bekle)
+            return
+        }
+        if (fastScanPending) return
         handler.removeCallbacks(scanRunnable)
         handler.postDelayed(scanRunnable, SCAN_DEBOUNCE_MS)
     }
 
     private fun runScan() {
+        fastScanPending = false
+        lastScanAt = SystemClock.uptimeMillis()
         val root = rootInActiveWindow
         if (root == null) {
             overlay.clear()
@@ -103,7 +138,7 @@ class ScreenReaderService : AccessibilityService() {
         // ana ekransa hiç tarama — kullanıcının servisi kapatabileceği kaçış
         // yolu her zaman açık kalmalı.
         val rootPackage = root.packageName?.toString()
-        if (rootPackage == packageName || rootPackage in skippedPackages) {
+        if ((rootPackage == packageName && !DemoState.gorunur) || rootPackage in skippedPackages) {
             overlay.clear()
             return
         }
@@ -115,10 +150,12 @@ class ScreenReaderService : AccessibilityService() {
 
     override fun onInterrupt() {
         handler.removeCallbacks(scanRunnable)
+        fastScanPending = false
         if (::overlay.isInitialized) overlay.clear()
     }
 
     override fun onDestroy() {
+        DemoState.demoKapandi = null
         handler.removeCallbacks(scanRunnable)
         if (::overlay.isInitialized) overlay.clear()
         super.onDestroy()
@@ -198,5 +235,9 @@ class ScreenReaderService : AccessibilityService() {
         // Olay fırtınası sönümleme süresi: son olaydan bu kadar ms sonra
         // tek tarama yapılır (100 ms'lik olay aralığının altında kalmalı)
         const val SCAN_DEBOUNCE_MS = 60L
+
+        // Kaydırmada iki tarama arası en az bu kadar ms (~1 kare): kapaklar
+        // içeriği yakından izler, CPU'yu da boğmaz
+        const val SCROLL_MIN_INTERVAL_MS = 16L
     }
 }
