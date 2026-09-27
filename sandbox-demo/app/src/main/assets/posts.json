@@ -3,240 +3,732 @@
     "kullaniciAdi": "ahmet_yilmaz",
     "metin": "Bugün hava çok güzeldi, pikniğe gittik!",
     "begeniSayisi": 42,
-    "renk": "#7C4DFF"
+    "renk": "#7C4DFF",
+    "kategori": "normal",
+    "gorselAdi": "mock_normal_piknik"
   },
   {
     "kullaniciAdi": "elif_kaya",
     "metin": "Yeni kitabımı bitirdim, muhteşemdi 📚",
     "begeniSayisi": 31,
-    "renk": "#E91E63"
-  },
-  {
-    "kullaniciAdi": "bahis_gurusu",
-    "metin": "Bugünkü kupon hazır! Bonus çevrim şartı yok, hemen katıl! 🎯",
-    "begeniSayisi": 18,
-    "renk": "#009688"
+    "renk": "#E91E63",
+    "kategori": "normal",
+    "gorselAdi": "mock_normal_kitaplar"
   },
   {
     "kullaniciAdi": "mehmet_demir",
     "metin": "Antalya'da tatil, deniz çok güzel!",
     "begeniSayisi": 95,
-    "renk": "#FF5722"
+    "renk": "#FF5722",
+    "kategori": "normal",
+    "gorselAdi": "mock_normal_plaj"
   },
   {
-    "kullaniciAdi": "zeynep_ak",
-    "metin": "b0nus fırsatı kaçırma, Telegram grubuna gel!",
-    "begeniSayisi": 7,
-    "renk": "#3F51B5"
+    "kullaniciAdi": "aile_okeyi",
+    "metin": "Pazar akşamı okey turnuvası, kaybeden bulaşıkları yıkıyor 😄",
+    "begeniSayisi": 168,
+    "renk": "#4CAF50",
+    "kategori": "tuzak",
+    "gorselAdi": "mock_trap_okey"
   },
   {
-    "kullaniciAdi": "can_yildiz",
-    "metin": "Kahvaltı yaptım, çok lezzetliydi ☕",
-    "begeniSayisi": 54,
-    "renk": "#4CAF50"
-  },
-  {
-    "kullaniciAdi": "ayse_oz",
-    "metin": "Bugün spor yaptım, harika hissediyorum 💪",
-    "begeniSayisi": 88,
-    "renk": "#FF9800"
-  },
-  {
-    "kullaniciAdi": "betul_arslan",
-    "metin": "Alfabetik sırayla kitap okuyorum, çok eğlenceli!",
-    "begeniSayisi": 23,
-    "renk": "#795548"
-  },
-  {
-    "kullaniciAdi": "kumar_kral",
-    "metin": "Ç3vrim şartsız çek! Telegram'a gel, oranlar çok iyi!",
-    "begeniSayisi": 5,
-    "renk": "#F44336"
-  },
-  {
-    "kullaniciAdi": "selin_yuce",
-    "metin": "Bugün çok güzel bir film izledim, tavsiye ederim 🎬",
-    "begeniSayisi": 67,
-    "renk": "#9C27B0"
-  },
-  {
-    "kullaniciAdi": "murat_celik",
-    "metin": "Maç kuponu paylaşıyorum, bu akşam büyük kazanç! 💰",
-    "begeniSayisi": 12,
-    "renk": "#FF5722"
-  },
-  {
-    "kullaniciAdi": "fatma_koc",
-    "metin": "Bugün annemle pasta yaptık, çok güzel oldu 🎂",
-    "begeniSayisi": 76,
-    "renk": "#E91E63"
-  },
-  {
-    "kullaniciAdi": "ozan_tas",
-    "metin": "1xbahis sitesine üye ol, ilk yatırıma %100 bonus!",
-    "begeniSayisi": 3,
-    "renk": "#607D8B"
-  },
-  {
-    "kullaniciAdi": "hande_yil",
-    "metin": "Yeni aldığım bisikletle şehri gezdim, harika!",
-    "begeniSayisi": 91,
-    "renk": "#4CAF50"
-  },
-  {
-    "kullaniciAdi": "casino_davet",
-    "metin": "Casino grubuna davet! Free spin kazanmak için hemen katıl 🎰",
-    "begeniSayisi": 8,
-    "renk": "#9C27B0"
-  },
-  {
-    "kullaniciAdi": "ali_kara",
-    "metin": "Bu adamın kumarhanesi yıkıldı haberi çıktı, inanılmaz!",
-    "begeniSayisi": 44,
-    "renk": "#795548"
-  },
-  {
-    "kullaniciAdi": "nisa_demir",
-    "metin": "Bahçeye domates ektim, büyümesini bekliyorum 🍅",
-    "begeniSayisi": 33,
-    "renk": "#FF9800"
-  },
-  {
-    "kullaniciAdi": "bahis_pro",
-    "metin": "Bu hafta sonu maç analizleri hazır, kuponu kap!",
-    "begeniSayisi": 15,
-    "renk": "#F44336"
-  },
-  {
-    "kullaniciAdi": "cem_yurt",
-    "metin": "Alfabetik sıraya göre müzik listesi yaptım 🎵",
-    "begeniSayisi": 28,
-    "renk": "#3F51B5"
-  },
-  {
-    "kullaniciAdi": "bonus_kazan",
-    "metin": "B0nus kodu: KAZAN100 — çevrim şartsız, hemen dene!",
-    "begeniSayisi": 6,
-    "renk": "#E91E63"
-  },
-  {
-    "kullaniciAdi": "ipek_arslan",
-    "metin": "Bugün güzel bir yürüyüş yaptım, doğa harikaydı 🌿",
-    "begeniSayisi": 82,
-    "renk": "#009688"
+    "kullaniciAdi": "anne_meltem",
+    "metin": "Kızım bugün ilk kez bisiklet sürdü, çok gururluyum 🚲",
+    "begeniSayisi": 34,
+    "renk": "#F44336",
+    "kategori": "normal",
+    "gorselAdi": "mock_normal_bisiklet"
   },
   {
     "kullaniciAdi": "telegram_grup",
     "metin": "Telegram bahis grubuna katıl, günlük ücretsiz tahminler!",
     "begeniSayisi": 9,
-    "renk": "#607D8B"
-  },
-  {
-    "kullaniciAdi": "kemal_ay",
-    "metin": "Yeni açılan kafede kahve içtim, çok güzeldi ☕",
-    "begeniSayisi": 57,
-    "renk": "#7C4DFF"
-  },
-  {
-    "kullaniciAdi": "spor_bahis",
-    "metin": "Süper lig maç tahmini: Galatasaray kazanır, kupona ekle!",
-    "begeniSayisi": 21,
-    "renk": "#FF5722"
-  },
-  {
-    "kullaniciAdi": "leyla_nur",
-    "metin": "Bugün çocuklarla parka gittik, çok eğlendik 🌳",
-    "begeniSayisi": 103,
-    "renk": "#4CAF50"
-  },
-  {
-    "kullaniciAdi": "kazan_kazan",
-    "metin": "Yatır kazan sistemi! Min 100TL yatır, 200TL bonus al!",
-    "begeniSayisi": 4,
-    "renk": "#F44336"
-  },
-  {
-    "kullaniciAdi": "burak_sen",
-    "metin": "Yeni çıkan filmi izledim, harika bir yapımdı 🎥",
-    "begeniSayisi": 69,
-    "renk": "#9C27B0"
-  },
-  {
-    "kullaniciAdi": "free_spin",
-    "metin": "FREE SPIN kazandın! Linke tıkla, ödülünü al 🎁",
-    "begeniSayisi": 11,
-    "renk": "#795548"
-  },
-  {
-    "kullaniciAdi": "merve_kaya",
-    "metin": "Bugün iş yerinde pasta kesildi, çok mutlu olduk 🎂",
-    "begeniSayisi": 48,
-    "renk": "#FF9800"
-  },
-  {
-    "kullaniciAdi": "oran_takip",
-    "metin": "Akşam maçı için oranlar yükseldi, kaçırma! ⚽",
-    "begeniSayisi": 16,
-    "renk": "#3F51B5"
-  },
-  {
-    "kullaniciAdi": "vip_bahis",
-    "metin": "VIP üyelere özel maç tahmini! Gruba katıl, kazan! 🏆",
-    "begeniSayisi": 14,
-    "renk": "#D32F2F"
-  },
-  {
-    "kullaniciAdi": "dilan_koc",
-    "metin": "Bugün arkadaşlarımla kahve içtim, çok güzel vakit geçirdik ☕",
-    "begeniSayisi": 72,
-    "renk": "#7B1FA2"
-  },
-  {
-    "kullaniciAdi": "kup0n_paylas",
-    "metin": "Günlük kup0n paylaşımı! Kaçırma, oranlar çok iyi ⚽",
-    "begeniSayisi": 9,
-    "renk": "#1565C0"
-  },
-  {
-    "kullaniciAdi": "emre_yil",
-    "metin": "Yeni aldığım kulaklık çok iyi, müzik dinlemek harika 🎧",
-    "begeniSayisi": 61,
-    "renk": "#2E7D32"
-  },
-  {
-    "kullaniciAdi": "para_kazan",
-    "metin": "Yatır çek sistemi! %200 ho5geldin bonusu seni bekliyor 💸",
-    "begeniSayisi": 3,
-    "renk": "#E65100"
-  },
-  {
-    "kullaniciAdi": "sude_arslan",
-    "metin": "Bugün bahçede çiçek ektim, çok eğlenceli 🌸",
-    "begeniSayisi": 84,
-    "renk": "#AD1457"
-  },
-  {
-    "kullaniciAdi": "canli_bahis",
-    "metin": "Canlı maç izle, canlı bahis yap! Telegram'da bekliyoruz 📱",
-    "begeniSayisi": 7,
-    "renk": "#4527A0"
+    "renk": "#607D8B",
+    "kategori": "bahis"
   },
   {
     "kullaniciAdi": "tolgahan_ay",
     "metin": "Haftasonu ailecek pikniğe gittik, çok güzeldi 🌿",
     "begeniSayisi": 93,
-    "renk": "#00695C"
+    "renk": "#00695C",
+    "kategori": "normal",
+    "gorselAdi": "mock_normal_piknik"
   },
   {
-    "kullaniciAdi": "iddaa_guru",
-    "metin": "Bu haftanın iddaa tahminleri hazır! DM at, göndereyim 🎯",
+    "kullaniciAdi": "murat_celik",
+    "metin": "Maç kuponu paylaşıyorum, bu akşam büyük kazanç! 💰",
+    "begeniSayisi": 12,
+    "renk": "#FF5722",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "zeynep_ak",
+    "metin": "b0nus fırsatı kaçırma, Telegram grubuna gel!",
+    "begeniSayisi": 7,
+    "renk": "#3F51B5",
+    "gorselAdi": "mock_bet_telegram",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "ali_kara",
+    "metin": "Bu adamın kumarhanesi yıkıldı haberi çıktı, inanılmaz!",
+    "begeniSayisi": 44,
+    "renk": "#795548",
+    "kategori": "tuzak"
+  },
+  {
+    "kullaniciAdi": "kazanc_hatti",
+    "metin": "Günde 2000₺ kazanmak ister misin? Sermaye 100₺, yatır kazan, link bioda",
+    "begeniSayisi": 5,
+    "renk": "#00BCD4",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "kahveci_umut",
+    "metin": "Evde filtre kahve demlemeyi öğrendim ☕",
+    "begeniSayisi": 119,
+    "renk": "#F44336",
+    "kategori": "normal",
+    "gorselAdi": "mock_normal_kahve"
+  },
+  {
+    "kullaniciAdi": "yeni_adres",
+    "metin": "Adresimiz değişti! Yeni giriş: güncel link bioda 🔗",
+    "begeniSayisi": 99,
+    "renk": "#4CAF50",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "gonullu_ekip",
+    "metin": "Sokak hayvanları için mama dağıttık, katılan herkese teşekkürler 🐶",
+    "begeniSayisi": 142,
+    "renk": "#795548",
+    "kategori": "normal",
+    "gorselAdi": "mock_normal_kopek"
+  },
+  {
+    "kullaniciAdi": "oran_takip",
+    "metin": "Akşam maçı için oranlar yükseldi, kaçırma! ⚽",
+    "begeniSayisi": 16,
+    "renk": "#3F51B5",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "slot_kizi",
+    "metin": "Günlük 50 freespin dağıtıyoruz, yorumlara 'ben' yaz 🎁",
+    "begeniSayisi": 64,
+    "renk": "#E91E63",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "yemek_tarifi",
+    "metin": "Mercimek çorbası tarifimi paylaştım, çok beğenildi 🍲",
+    "begeniSayisi": 60,
+    "renk": "#9C27B0",
+    "kategori": "normal",
+    "gorselAdi": "mock_normal_corba"
+  },
+  {
+    "kullaniciAdi": "garanti_tahmin",
+    "metin": "Şike bilgisi geldi, VIP gruba katılana banko maç veriyorum. Ücretli üyelik DM",
+    "begeniSayisi": 31,
+    "renk": "#795548",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "bahis_gurusu",
+    "metin": "Bugünkü kupon hazır! Bonus çevrim şartı yok, hemen katıl! 🎯",
+    "begeniSayisi": 18,
+    "renk": "#009688",
+    "gorselAdi": "mock_bet_kupon",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "bahis_pro",
+    "metin": "Bu hafta sonu maç analizleri hazır, kuponu kap!",
+    "begeniSayisi": 15,
+    "renk": "#F44336",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "gezgin_sena",
+    "metin": "Kapadokya'da balon turu yaptık, rüya gibiydi 🎈",
+    "begeniSayisi": 126,
+    "renk": "#FF5722",
+    "kategori": "normal",
+    "gorselAdi": "mock_normal_balon"
+  },
+  {
+    "kullaniciAdi": "kupon_ustasi",
+    "metin": "Aynı kuponu bugün tekrar paylaşıyorum, dün yatıran herkes kazandı! Kupon grubuna katıl",
+    "begeniSayisi": 128,
+    "renk": "#9C27B0",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "kitap_kurdu",
+    "metin": "Bu ayın okuma listem hazır, önerilere açığım 📚",
+    "begeniSayisi": 125,
+    "renk": "#03A9F4",
+    "kategori": "normal",
+    "gorselAdi": "mock_normal_kitaplar"
+  },
+  {
+    "kullaniciAdi": "para_kazan",
+    "metin": "Yatır çek sistemi! %200 ho5geldin bonusu seni bekliyor 💸",
+    "begeniSayisi": 3,
+    "renk": "#E65100",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "bilgisayarci",
+    "metin": "Anakartta boş RAM slotu kalmadı, yükseltme zor olacak 💻",
+    "begeniSayisi": 121,
+    "renk": "#8BC34A",
+    "kategori": "tuzak"
+  },
+  {
+    "kullaniciAdi": "sinema_sever",
+    "metin": "Hafta sonu için film önerisi olan var mı? 🍿",
+    "begeniSayisi": 123,
+    "renk": "#4CAF50",
+    "kategori": "normal"
+  },
+  {
+    "kullaniciAdi": "teknofest_test",
+    "metin": "Deneme bonusu ile günde 5000 TL kazan! Üyelik linki profilde.",
+    "begeniSayisi": 4,
+    "renk": "#D32F2F",
+    "gorselAdi": "mock_bet_warning",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "sude_arslan",
+    "metin": "Bugün bahçede çiçek ektim, çok eğlenceli 🌸",
+    "begeniSayisi": 84,
+    "renk": "#AD1457",
+    "kategori": "normal",
+    "gorselAdi": "mock_normal_cicek"
+  },
+  {
+    "kullaniciAdi": "leyla_nur",
+    "metin": "Bugün çocuklarla parka gittik, çok eğlendik 🌳",
+    "begeniSayisi": 103,
+    "renk": "#4CAF50",
+    "kategori": "normal"
+  },
+  {
+    "kullaniciAdi": "muzisyen_kaan",
+    "metin": "Gitarda yeni bir parça öğrendim, akşam kayıt alacağım 🎸",
+    "begeniSayisi": 123,
+    "renk": "#009688",
+    "kategori": "normal",
+    "gorselAdi": "mock_normal_gitar"
+  },
+  {
+    "kullaniciAdi": "bonus_kazan",
+    "metin": "B0nus kodu: KAZAN100 — çevrim şartsız, hemen dene!",
+    "begeniSayisi": 6,
+    "renk": "#E91E63",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "kemal_ay",
+    "metin": "Yeni açılan kafede kahve içtim, çok güzeldi ☕",
+    "begeniSayisi": 57,
+    "renk": "#7C4DFF",
+    "kategori": "normal"
+  },
+  {
+    "kullaniciAdi": "ozan_tas",
+    "metin": "1xbahis sitesine üye ol, ilk yatırıma %100 bonus!",
+    "begeniSayisi": 3,
+    "renk": "#607D8B",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "kazanan_emre",
+    "metin": "Dün 5'li kupon tuttu 🤑 Ben nasıl yaptım öğrenmek isteyen DM",
+    "begeniSayisi": 131,
+    "renk": "#03A9F4",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "promo_kodlari",
+    "metin": "Deneme b o n u s u veren siteler listesi pinned'da 📌",
+    "begeniSayisi": 56,
+    "renk": "#8BC34A",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "slot_merkezi",
+    "metin": "500 Freespin anında hesapta! Çevrim şartsız kazanç fırsatı profil linkinde.",
+    "begeniSayisi": 12,
+    "renk": "#9C27B0",
+    "gorselAdi": "mock_bet_slot",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "gunbatimi_ask",
+    "metin": "Bugünkü gün batımı inanılmazdı 🌅",
+    "begeniSayisi": 69,
+    "renk": "#00BCD4",
+    "kategori": "normal",
+    "gorselAdi": "mock_normal_manzara"
+  },
+  {
+    "kullaniciAdi": "can_yildiz",
+    "metin": "Kahvaltı yaptım, çok lezzetliydi ☕",
+    "begeniSayisi": 54,
+    "renk": "#4CAF50",
+    "kategori": "normal",
+    "gorselAdi": "mock_normal_kahvalti"
+  },
+  {
+    "kullaniciAdi": "selin_yuce",
+    "metin": "Bugün çok güzel bir film izledim, tavsiye ederim 🎬",
+    "begeniSayisi": 67,
+    "renk": "#9C27B0",
+    "kategori": "normal"
+  },
+  {
+    "kullaniciAdi": "nisa_demir",
+    "metin": "Bahçeye domates ektim, büyümesini bekliyorum 🍅",
+    "begeniSayisi": 33,
+    "renk": "#FF9800",
+    "kategori": "normal"
+  },
+  {
+    "kullaniciAdi": "oran_avcisi",
+    "metin": "Oranlar düşmeden yakala 📉 İlk yatırıma ek bonus var",
+    "begeniSayisi": 153,
+    "renk": "#673AB7",
+    "kategori": "bahis",
+    "gorselAdi": "mock_bet_oranlar"
+  },
+  {
+    "kullaniciAdi": "hobi_ahsap",
+    "metin": "İlk ahşap raf projemi bitirdim, biraz eğri ama benim 🪵",
+    "begeniSayisi": 146,
+    "renk": "#8BC34A",
+    "kategori": "normal"
+  },
+  {
+    "kullaniciAdi": "burcu_tan",
+    "metin": "Bahse girerim yarın da yağmur yağacak, şemsiyeyi unutmayın ☔",
+    "begeniSayisi": 150,
+    "renk": "#795548",
+    "kategori": "tuzak"
+  },
+  {
+    "kullaniciAdi": "kod_paylasim",
+    "metin": "K4ZAN500 kodunu gir, çevrimsiz bakiye senin 💜",
+    "begeniSayisi": 156,
+    "renk": "#FFC107",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "royal_vip",
+    "metin": "Canlı krupiye ile rulet keyfi 🎲 Kayıt linki profilde",
+    "begeniSayisi": 29,
+    "renk": "#FF5722",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "betul_arslan",
+    "metin": "Alfabetik sırayla kitap okuyorum, çok eğlenceli!",
+    "begeniSayisi": 23,
+    "renk": "#795548",
+    "kategori": "tuzak"
+  },
+  {
+    "kullaniciAdi": "bahis_gurusu",
+    "metin": "Bugünkü kupon hazır! Bonus çevrim şartı yok, hemen katıl! 🎯",
+    "begeniSayisi": 18,
+    "renk": "#009688",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "alfabe_oyunu",
+    "metin": "Çocuklarla alfabe oyunu oynadık, 'betik' kelimesini öğrendiler",
+    "begeniSayisi": 130,
+    "renk": "#00BCD4",
+    "kategori": "tuzak"
+  },
+  {
+    "kullaniciAdi": "fatma_koc",
+    "metin": "Bugün annemle pasta yaptık, çok güzel oldu 🎂",
+    "begeniSayisi": 76,
+    "renk": "#E91E63",
+    "kategori": "normal",
+    "gorselAdi": "mock_normal_pasta"
+  },
+  {
+    "kullaniciAdi": "burak_sen",
+    "metin": "Yeni çıkan filmi izledim, harika bir yapımdı 🎥",
+    "begeniSayisi": 69,
+    "renk": "#9C27B0",
+    "kategori": "normal"
+  },
+  {
+    "kullaniciAdi": "spin_dunyasi",
+    "metin": "3 tane 7 geldi, jackpot! Sen de dene 🎰",
+    "begeniSayisi": 149,
+    "renk": "#03A9F4",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "psikolog_deniz",
+    "metin": "Kumar bağımlılığı bir hastalıktır, yardım almaktan çekinmeyin. Yeşilay danışma hattı 115",
+    "begeniSayisi": 26,
+    "renk": "#8BC34A",
+    "kategori": "tuzak"
+  },
+  {
+    "kullaniciAdi": "kumar_kral",
+    "metin": "Ç3vrim şartsız çek! Telegram'a gel, oranlar çok iyi!",
+    "begeniSayisi": 5,
+    "renk": "#F44336",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "spor_bahis",
+    "metin": "Süper lig maç tahmini: Galatasaray kazanır, oran 1.85, kupona ekle!",
+    "begeniSayisi": 21,
+    "renk": "#FF5722",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "dilan_koc",
+    "metin": "Bugün arkadaşlarımla kahve içtim, çok güzel vakit geçirdik ☕",
+    "begeniSayisi": 72,
+    "renk": "#7B1FA2",
+    "kategori": "normal",
+    "gorselAdi": "mock_normal_kahve"
+  },
+  {
+    "kullaniciAdi": "cem_yurt",
+    "metin": "Alfabetik sıraya göre müzik listesi yaptım 🎵",
+    "begeniSayisi": 28,
+    "renk": "#3F51B5",
+    "kategori": "tuzak"
+  },
+  {
+    "kullaniciAdi": "yildiz_oranlar",
+    "metin": "Bu akşamın en yüksek oranları burada 🔥 Kuponunu şimdi oluştur!",
+    "begeniSayisi": 33,
+    "renk": "#607D8B",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "matematik_ogr",
+    "metin": "Bugün matematikte kesirleri işledik, sınav haftaya 📐",
+    "begeniSayisi": 9,
+    "renk": "#00BCD4",
+    "kategori": "tuzak"
+  },
+  {
+    "kullaniciAdi": "vip_bahis",
+    "metin": "VIP üyelere özel maç tahmini! Gruba katıl, kazan! 🏆",
+    "begeniSayisi": 14,
+    "renk": "#D32F2F",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "yatirim_notu",
+    "metin": "Bireysel emeklilikte fon dağılımını güncelledim, uzun vade önemli",
+    "begeniSayisi": 156,
+    "renk": "#673AB7",
+    "kategori": "tuzak"
+  },
+  {
+    "kullaniciAdi": "canli_oyna",
+    "metin": "Maç bitmeden oyna, oranlar her dakika değişiyor ⚡",
+    "begeniSayisi": 168,
+    "renk": "#00BCD4",
+    "kategori": "bahis",
+    "gorselAdi": "mock_bet_canli"
+  },
+  {
+    "kullaniciAdi": "b_e_t_t_o_r",
+    "metin": "B.a.h.i.s sitesi arayan yazsın, güvenilir bahis adresi DM'de 👀",
+    "begeniSayisi": 28,
+    "renk": "#673AB7",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "free_spin",
+    "metin": "FREE SPIN kazandın! Linke tıkla, ödülünü al 🎁",
     "begeniSayisi": 11,
-    "renk": "#BF360C"
+    "renk": "#795548",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "hande_yil",
+    "metin": "Yeni aldığım bisikletle şehri gezdim, harika!",
+    "begeniSayisi": 91,
+    "renk": "#4CAF50",
+    "kategori": "normal",
+    "gorselAdi": "mock_normal_bisiklet"
+  },
+  {
+    "kullaniciAdi": "haber_bulteni",
+    "metin": "Yasadışı bahis çetesine operasyon: 20 gözaltı",
+    "begeniSayisi": 152,
+    "renk": "#03A9F4",
+    "kategori": "tuzak"
+  },
+  {
+    "kullaniciAdi": "merve_kaya",
+    "metin": "Bugün iş yerinde pasta kesildi, çok mutlu olduk 🎂",
+    "begeniSayisi": 48,
+    "renk": "#FF9800",
+    "kategori": "normal"
+  },
+  {
+    "kullaniciAdi": "kargo_bekliyor",
+    "metin": "Kuponlu indirimle aldığım ayakkabı kargoya verildi 👟",
+    "begeniSayisi": 32,
+    "renk": "#8BC34A",
+    "kategori": "tuzak"
+  },
+  {
+    "kullaniciAdi": "tahminci_ali",
+    "metin": "Bu hafta 12 maçın 11'i tuttu. Kupon kanalıma katıl, ücretsiz tahmin 🎯",
+    "begeniSayisi": 176,
+    "renk": "#607D8B",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "casino_davet",
+    "metin": "Casino grubuna davet! Free spin kazanmak için hemen katıl 🎰",
+    "begeniSayisi": 8,
+    "renk": "#9C27B0",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "kahve_molasi",
+    "metin": "Pazar sabahı kahvesi olmadan olmaz ☕",
+    "begeniSayisi": 110,
+    "renk": "#FFC107",
+    "kategori": "normal",
+    "gorselAdi": "mock_normal_kahve"
   },
   {
     "kullaniciAdi": "nazli_demir",
     "metin": "Yeni pasta tarifimi denedim, çok lezzetli oldu 🎂",
     "begeniSayisi": 77,
-    "renk": "#6A1B9A"
+    "renk": "#6A1B9A",
+    "kategori": "normal",
+    "gorselAdi": "mock_normal_pasta"
+  },
+  {
+    "kullaniciAdi": "kosucu_mert",
+    "metin": "10K koşuyu 52 dakikada bitirdim, kişisel rekor! 🏃",
+    "begeniSayisi": 15,
+    "renk": "#4CAF50",
+    "kategori": "normal",
+    "gorselAdi": "mock_normal_kosu"
+  },
+  {
+    "kullaniciAdi": "ogrenci_ece",
+    "metin": "Final haftası başladı, kütüphanedeyim 📖",
+    "begeniSayisi": 9,
+    "renk": "#FFC107",
+    "kategori": "normal"
+  },
+  {
+    "kullaniciAdi": "bahcivan_nur",
+    "metin": "Balkondaki fesleğenler çok güzel büyüdü 🌱",
+    "begeniSayisi": 29,
+    "renk": "#4CAF50",
+    "kategori": "normal"
+  },
+  {
+    "kullaniciAdi": "poker_gece",
+    "metin": "Online poker turnuvası, giriş 50₺ ödül havuzu 10.000₺ ♠️",
+    "begeniSayisi": 90,
+    "renk": "#3F51B5",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "market_takip",
+    "metin": "Mahalle marketinde hafta sonu indirim kuponu var, kaçırmayın 🛒",
+    "begeniSayisi": 77,
+    "renk": "#795548",
+    "kategori": "tuzak",
+    "gorselAdi": "mock_trap_marketkupon"
+  },
+  {
+    "kullaniciAdi": "aviator_pro",
+    "metin": "Aviator oyununda 10x'te çıkma taktiği, bonus ile hemen oyna ✈️",
+    "begeniSayisi": 94,
+    "renk": "#9C27B0",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "spor_yorumcu",
+    "metin": "Dün akşamki derbi çok çekişmeliydi, iki takım da iyi oynadı ⚽",
+    "begeniSayisi": 104,
+    "renk": "#03A9F4",
+    "kategori": "tuzak"
+  },
+  {
+    "kullaniciAdi": "kup0n_paylas",
+    "metin": "Günlük kup0n paylaşımı! Kaçırma, oranlar çok iyi ⚽",
+    "begeniSayisi": 9,
+    "renk": "#1565C0",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "fotograf_ask",
+    "metin": "Yeni objektifle ilk fotoğraflarımı çektim 📷",
+    "begeniSayisi": 136,
+    "renk": "#F44336",
+    "kategori": "normal"
+  },
+  {
+    "kullaniciAdi": "banko_hoca",
+    "metin": "Bugünün bankosu hazır, kaçıran üzülür 🎯 t.me linki bioda",
+    "begeniSayisi": 145,
+    "renk": "#8BC34A",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "iddia_sever",
+    "metin": "1ddaa kuponu: MS1 + KG, oran 4.20. Kupona ekle, kazan!",
+    "begeniSayisi": 22,
+    "renk": "#4CAF50",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "okul_takimi",
+    "metin": "Okul takımımız turnuvada kazandı! Herkese tebrikler 🏆",
+    "begeniSayisi": 120,
+    "renk": "#009688",
+    "kategori": "tuzak",
+    "gorselAdi": "mock_trap_macsonucu"
+  },
+  {
+    "kullaniciAdi": "sanal_futbol",
+    "metin": "Sanal futbolda 3 dakikada bir maç, sürekli kazan ⚽",
+    "begeniSayisi": 67,
+    "renk": "#607D8B",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "tv_dizisi",
+    "metin": "Dizide kumarhane sahnesi çok iyi çekilmişti, sezon finali efsane",
+    "begeniSayisi": 132,
+    "renk": "#9C27B0",
+    "kategori": "tuzak"
+  },
+  {
+    "kullaniciAdi": "ipek_arslan",
+    "metin": "Bugün güzel bir yürüyüş yaptım, doğa harikaydı 🌿",
+    "begeniSayisi": 82,
+    "renk": "#009688",
+    "kategori": "normal",
+    "gorselAdi": "mock_normal_manzara"
+  },
+  {
+    "kullaniciAdi": "ayse_oz",
+    "metin": "Bugün spor yaptım, harika hissediyorum 💪",
+    "begeniSayisi": 88,
+    "renk": "#FF9800",
+    "kategori": "normal"
+  },
+  {
+    "kullaniciAdi": "zeynep_ak",
+    "metin": "b0nus fırsatı kaçırma, Telegram grubuna gel!",
+    "begeniSayisi": 7,
+    "renk": "#3F51B5",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "emre_yil",
+    "metin": "Yeni aldığım kulaklık çok iyi, müzik dinlemek harika 🎧",
+    "begeniSayisi": 61,
+    "renk": "#2E7D32",
+    "kategori": "normal"
+  },
+  {
+    "kullaniciAdi": "canli_bahis",
+    "metin": "Canlı maç izle, canlı bahis yap! Telegram'da bekliyoruz 📱",
+    "begeniSayisi": 7,
+    "renk": "#4527A0",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "kazan_kazan",
+    "metin": "Yatır kazan sistemi! Min 100TL yatır, 200TL bonus al!",
+    "begeniSayisi": 4,
+    "renk": "#F44336",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "hizli_cekim",
+    "metin": "5 dakikada çekim yapan site, papara ile yatır çek 💳",
+    "begeniSayisi": 178,
+    "renk": "#673AB7",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "gece_bahis",
+    "metin": "Gece yarısı canlı masalar açık, gel beraber oynayalım 🌙",
+    "begeniSayisi": 160,
+    "renk": "#3F51B5",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "kasa_katla",
+    "metin": "Bahis kasamı 1 haftada 10'a katladım, VIP gruba gel 📈",
+    "begeniSayisi": 134,
+    "renk": "#F44336",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "yazilimci_eda",
+    "metin": "İlk Android uygulamamı yayınladım, çok heyecanlıyım 📱",
+    "begeniSayisi": 162,
+    "renk": "#8BC34A",
+    "kategori": "normal"
+  },
+  {
+    "kullaniciAdi": "kayip_telafi",
+    "metin": "Kaybettiklerini geri almak için tek şans! %50 kayıp bonusu",
+    "begeniSayisi": 145,
+    "renk": "#03A9F4",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "deniz_kiyisi",
+    "metin": "Sahilde yürüyüş yaptık, hava tam kıvamında 🌊",
+    "begeniSayisi": 135,
+    "renk": "#9C27B0",
+    "kategori": "normal",
+    "gorselAdi": "mock_normal_manzara"
+  },
+  {
+    "kullaniciAdi": "tarih_kulubu",
+    "metin": "Monte Carlo'nun tarihini araştırdım, çok ilginç bir şehir",
+    "begeniSayisi": 97,
+    "renk": "#607D8B",
+    "kategori": "tuzak"
+  },
+  {
+    "kullaniciAdi": "iddaa_guru",
+    "metin": "Bu haftanın iddaa tahminleri hazır! DM at, kuponu göndereyim 🎯",
+    "begeniSayisi": 11,
+    "renk": "#BF360C",
+    "kategori": "bahis"
+  },
+  {
+    "kullaniciAdi": "kedi_sahibi",
+    "metin": "Kedim bütün gün koltukta uyudu, ne güzel hayat 🐱",
+    "begeniSayisi": 36,
+    "renk": "#00BCD4",
+    "kategori": "normal",
+    "gorselAdi": "mock_normal_kedi"
   }
 ]

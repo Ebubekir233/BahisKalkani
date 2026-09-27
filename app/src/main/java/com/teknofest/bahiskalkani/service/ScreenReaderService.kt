@@ -69,8 +69,16 @@ class ScreenReaderService : AccessibilityService() {
         model = TfLiteDetector.fromAssets(this)
         overlay = OverlayController(
             this,
-            onShowAnyway = { target -> allowedHashes.add(target.textHash) },
-            onShowAnywayAll = { targets -> targets.forEach { allowedHashes.add(it.textHash) } },
+            onShowAnyway = { target ->
+                allowedHashes.add(target.textHash)
+                BlockStats.showAnywayCount++
+            },
+            onShowAnywayAll = { targets ->
+                targets.forEach { allowedHashes.add(it.textHash) }
+                // Öğe sayısı değil, tek bir "tümünü göster" tıklaması: bir
+                // eylem = bir davranış sinyali (bkz. BlockStats.showAnywayCount)
+                BlockStats.showAnywayCount++
+            },
         )
         Log.i(TAG, "Erişilebilirlik servisi bağlandı")
     }

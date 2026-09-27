@@ -19,6 +19,9 @@ import org.tensorflow.lite.Interpreter
  *  3. Meta-veri süzgeci: "780+ beğenme · 2 hafta önce" gibi salt
  *     sayaç/zaman metinleri ve tarayıcı üretimi sabit metinler ("IP
  *     adresinizden" konum alt bilgisi) modele sorulmadan temiz sayılır.
+ *  4. Sözlük dışı (OOV) oranı kapısı: karakterlerin çoğu model sözlüğünde
+ *     yoksa (süslü yazı tipleri, başka alfabeler) modelin girdisi anlamsız
+ *     olur; bu metinlerde model kullanılmaz.
  *
  * Ön işleme, model/spec/ON_ISLEME.md (v3) sözleşmesiyle birebir aynı olmak
  * ZORUNDA — URL regex'i ve fold haritası dahil değişiklik Python tarafıyla
@@ -50,6 +53,8 @@ class TfLiteDetector(
         val normalized = normalizeUrls(fold(Normalizer.normalize(text, Normalizer.Form.NFC)))
         val kalan = normalized.replace(URL_TOKEN, " ").trim()
         if (kalan.length < 3) return false                       // katman 2 (çıplak URL)
+        val sozlukGirdisi = normalized.lowercase(turkish).replace("̇", "")
+        if (sozlukDisiOraniYuksek(sozlukGirdisi, char2id)) return false   // katman 4
         return score(normalized) >= esik
     }
 
@@ -125,6 +130,35 @@ class TfLiteDetector(
         private const val PAD = 0
         private const val OOV = 1
         private const val URL_TOKEN = "🔗"
+
+        /** Katman 4 sınırı: metnin bu orandan fazlası sözlük dışıysa modele sorulmaz. */
+        private const val SOZLUK_DISI_SINIRI = 0.4
+
+        /**
+         * Katman 4 — sözlük dışı (OOV) oranı kapısı.
+         *
+         * Sözlük 96 karakterlik Türkçe/ASCII kümesidir (surum 3). Instagram'ın
+         * süslü yazı tipleri (𝓰𝓾𝓵), Kiril/Arap alfabesi ya da yoğun emoji
+         * dizileri bu kümede yoktur; her karakter OOV'ye düşünce modelin
+         * gördüğü girdi "bilinmeyen bilinmeyen bilinmeyen…" olur ve çıktısı
+         * anlamsızdır — eşiği aşması da rastlantıdır. Böyle metinlerde model
+         * kullanılmaz (24 Eylül saha raporu: Instagram kullanıcı adları).
+         *
+         * Kelime listesi katmanı bundan etkilenmez; sansürlü yazımlar
+         * (b0nus, ç3vrim) ASCII olduğu için bu kapıya takılmaz.
+         */
+        fun sozlukDisiOraniYuksek(text: String, char2id: Map<String, Int>): Boolean {
+            var toplam = 0
+            var bilinmeyen = 0
+            val it = text.codePoints().iterator()
+            while (it.hasNext()) {
+                val s = String(Character.toChars(it.nextInt()))
+                if (s.isBlank()) continue
+                toplam++
+                if (!char2id.containsKey(s)) bilinmeyen++
+            }
+            return toplam > 0 && bilinmeyen.toDouble() / toplam > SOZLUK_DISI_SINIRI
+        }
 
         /** Python tarafındaki URL_RE ile BİREBİR aynı (spec §URL). */
         private val URL_RE = Regex(

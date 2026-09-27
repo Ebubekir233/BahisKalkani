@@ -18,6 +18,9 @@
     <string name="main_how_2">Kelime listesi ve cihaz üstü yapay zekâ birlikte karar verir</string>
     <string name="main_how_3">Bahse teşvik eden içeriğin üstü anında kapatılır</string>
     <string name="main_kvkk_note">Okunan hiçbir metin kaydedilmez, hiçbir veri cihazdan çıkmaz, internet bağlantısı kullanılmaz.</string>
+    <string name="main_yedam_title">Yalnız değilsin</string>
+    <string name="main_yedam_body">Engellenen içeriği sık sık görüntülediğini fark ettik. İstersen Yeşilay Danışmanlık Merkezi\'ni (YEDAM) ücretsiz ve gizlilik içinde arayabilirsin.</string>
+    <string name="main_yedam_call">191\'i Ara</string>
 
     <string name="overlay_warning">⚠️ Bahse teşvik eden içerik engellendi</string>
     <string name="overlay_show_anyway">Yine de göster</string>

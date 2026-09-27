@@ -2,6 +2,7 @@ package com.teknofest.bahiskalkani
 
 import android.content.ComponentName
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import androidx.activity.ComponentActivity
@@ -54,8 +55,15 @@ class MainActivity : ComponentActivity() {
                     MainScreen(
                         serviceEnabled = serviceEnabled,
                         blockedCount = BlockStats.blockedCount,
+                        showAnywayCount = BlockStats.showAnywayCount,
                         onOpenSettings = {
                             startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
+                        },
+                        onCallYedam = {
+                            // ACTION_DIAL: numarayı arama ekranına yazar, aramayı
+                            // KULLANICI kendi başlatır — CALL_PHONE izni gerekmez,
+                            // uygulama kullanıcı adına arama başlatmaz.
+                            startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:191")))
                         },
                         modifier = Modifier.padding(innerPadding),
                     )
@@ -83,7 +91,9 @@ class MainActivity : ComponentActivity() {
 fun MainScreen(
     serviceEnabled: Boolean,
     blockedCount: Int,
+    showAnywayCount: Int,
     onOpenSettings: () -> Unit,
+    onCallYedam: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -96,6 +106,9 @@ fun MainScreen(
         Header()
         StatusCard(serviceEnabled = serviceEnabled, onOpenSettings = onOpenSettings)
         CounterCard(blockedCount = blockedCount)
+        if (showAnywayCount >= BlockStats.YEDAM_THRESHOLD) {
+            YedamCard(onCallYedam = onCallYedam)
+        }
         HowItWorksCard()
         PrivacyNote()
     }
@@ -214,6 +227,50 @@ private fun CounterCard(blockedCount: Int) {
     }
 }
 
+/**
+ * Kullanıcı korumayı sık sık "yine de göster" ile aştığında (bkz.
+ * BlockStats.YEDAM_THRESHOLD) gösterilen nazik yönlendirme. Yargılayıcı
+ * değil, kapatılamaz bir uyarı değil — sadece bir kapı: arama tek
+ * dokunuşla değil, kullanıcı numarayı görüp kendi aramasıyla başlar.
+ */
+@Composable
+private fun YedamCard(onCallYedam: () -> Unit) {
+    Card(
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+        ),
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Column(
+            modifier = Modifier.padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
+                Text(text = "💚", fontSize = 20.sp)
+                Text(
+                    text = stringResource(R.string.main_yedam_title),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onTertiaryContainer,
+                )
+            }
+            Text(
+                text = stringResource(R.string.main_yedam_body),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onTertiaryContainer,
+            )
+            OutlinedButton(
+                onClick = onCallYedam,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text(stringResource(R.string.main_yedam_call))
+            }
+        }
+    }
+}
+
 @Composable
 private fun HowItWorksCard() {
     Card(modifier = Modifier.fillMaxWidth()) {
@@ -266,7 +323,13 @@ private fun PrivacyNote() {
 @Composable
 fun MainScreenActivePreview() {
     BahisKalkaniTheme {
-        MainScreen(serviceEnabled = true, blockedCount = 27, onOpenSettings = {})
+        MainScreen(
+            serviceEnabled = true,
+            blockedCount = 27,
+            showAnywayCount = 0,
+            onOpenSettings = {},
+            onCallYedam = {},
+        )
     }
 }
 
@@ -274,6 +337,26 @@ fun MainScreenActivePreview() {
 @Composable
 fun MainScreenDisabledPreview() {
     BahisKalkaniTheme {
-        MainScreen(serviceEnabled = false, blockedCount = 0, onOpenSettings = {})
+        MainScreen(
+            serviceEnabled = false,
+            blockedCount = 0,
+            showAnywayCount = 0,
+            onOpenSettings = {},
+            onCallYedam = {},
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "YEDAM yönlendirmesi")
+@Composable
+fun MainScreenYedamPreview() {
+    BahisKalkaniTheme {
+        MainScreen(
+            serviceEnabled = true,
+            blockedCount = 42,
+            showAnywayCount = BlockStats.YEDAM_THRESHOLD,
+            onOpenSettings = {},
+            onCallYedam = {},
+        )
     }
 }

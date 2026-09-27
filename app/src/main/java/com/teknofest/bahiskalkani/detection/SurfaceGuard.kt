@@ -28,6 +28,8 @@ class SurfaceGuard {
         return isWhatsappSystemMessage(n, context) ||
             isCodeLike(n) ||
             isFormOrIdentityField(n) ||
+            isIdentityLine(text, n, context) ||
+            isLongTextWithoutBettingSignal(n) ||
             isFilePreview(n) ||
             isForumOrLoginChrome(n) ||
             isProfessionalProfileText(n, context) ||
@@ -74,6 +76,137 @@ class SurfaceGuard {
         if (n.length > 140) return false
         if (FORM_LABEL_PATTERNS.any { it.matches(n) }) return true
         return EMAIL_RE.matches(n) || PHONE_RE.matches(n) || IBAN_RE.matches(n)
+    }
+
+    /**
+     * Kimlik satırı mı? (telefon numarası, @kullanıcı adı, kişi/grup adı)
+     *
+     * 24 Eylül saha testi: bu metinler İÇERİK değil ETİKET; modele sorulunca
+     * promosyon metni sanılıp örtülüyor (WhatsApp grup üyelerinin ad/numaraları,
+     * X kullanıcı adları). Kapı BÜYÜK/küçük harf ayrımına baktığı için ham
+     * metinle çalışır — normalize() her şeyi küçültür.
+     *
+     * Güvenlik: bahis çağrışımlı tek kelime bile varsa kimlik sayılmaz, karar
+     * modele kalır (üstte zaten hasBettingRiskAnchor kapısı var; buradaki
+     * SOFT_BETTING_WORDS onun daha geniş bir katmanı).
+     */
+    private fun isIdentityLine(text: String, n: String, context: SurfaceContext): Boolean {
+        // WhatsApp rehberde olmayan kişiyi "~Ahmet" diye gösterir; grup
+        // başlığındaki üye listesinde her ada ayrı ayrı eklenir.
+        val raw = text.trim().trim('~', ' ')
+        if (raw.isEmpty()) return false
+        if (SOFT_BETTING_WORDS.any { it.containsMatchIn(n) }) return false
+        // Bitişik yazım kaçağı: "@denemebonusu" kelime sınırı taşımadığı için
+        // yukarıdaki kontrollerin hiçbirine takılmaz (24 Eylül cihaz ölçümü).
+        // Tanıtım yapısı (link, para, yüzde) da kimlik satırında bulunmaz.
+        if (hasBettingSignal(n) || hasPromoSignal(n)) return false
+
+        // Telefon numarası: yeterince rakam + neredeyse tamamı rakam/numara
+        // noktalaması. Eski PHONE_RE tam eşleşme aradığı için "+90 (555)…"
+        // veya "Ahmet: 0555…" gibi biçimler kaçıyordu.
+        if (raw.count { it.isDigit() } >= PHONE_MIN_DIGITS) {
+            val phoneish = raw.count { it.isDigit() || it in PHONE_PUNCTUATION }
+            if (phoneish >= raw.length * PHONE_CHAR_RATIO) return true
+        }
+
+        // Virgüllü ad listesi (WhatsApp grup başlığındaki üye satırı) tek bir
+        // addan uzun olur; sınırlar ona göre gevşetilir.
+        val parcalar = raw.split(',').map { it.trim() }.filter { it.isNotEmpty() }
+        val adListesi = parcalar.size >= 2
+        if (raw.length > if (adListesi) IDENTITY_LIST_MAX_LEN else IDENTITY_MAX_LEN) return false
+
+        var handles = 0
+        var adKelimesi = 0
+        var buyukHarfliAd = 0
+        for (parca in parcalar) {
+            var parcaAdSayisi = 0
+            for (token in parca.split(WHITESPACE_RE)) {
+                val t = token.trim(*TOKEN_TRIM_CHARS)
+                when {
+                    t.isEmpty() -> Unit // ayraç: "·", "•", "-", "~"
+                    t.startsWith("@") && t.length > 1 -> handles++
+                    t.all { it.isDigit() || it in PHONE_PUNCTUATION } -> Unit // numara parçası
+                    META_TOKEN_RE.matches(t.lowercase(TURKISH)) -> Unit // "2s", "12dk", "1953"
+                    t.none { it.isLetterOrDigit() } -> Unit // emoji / sembol
+                    isNameWord(t) -> {
+                        parcaAdSayisi++
+                        adKelimesi++
+                        if (t.first().isUpperCase()) buyukHarfliAd++
+                    }
+                    else -> return false // cümle içeriği: kimlik değil
+                }
+            }
+            // Tek kişinin adı bu kadar uzun olmaz; daha uzunsa cümledir
+            if (parcaAdSayisi > IDENTITY_PART_MAX_WORDS) return false
+        }
+
+        // @kullanıcı adı her yüzeyde kimliktir; çıplak ad-soyad yalnızca
+        // sosyal/mesajlaşma yüzeylerinde (haber başlığı da ad-soyad gibi görünür)
+        if (handles > 0) return true
+        if (!isIdentityNamePackage(context)) return false
+        val enFazlaAd = if (adListesi) IDENTITY_LIST_MAX_WORDS else IDENTITY_MAX_WORDS
+        if (adKelimesi !in 1..enFazlaAd) return false
+        // Ad listesinde kelimelerin çoğu büyük harfle başlar ("Halil hoca" gibi
+        // karışık yazımlara yer bırakır); cümlede yalnızca ilk kelime başlar —
+        // ayrımı bu oran yapar, kelime kelime büyük harf şartı değil.
+        return buyukHarfliAd >= adKelimesi * NAME_UPPERCASE_RATIO
+    }
+
+    /**
+     * Uzun metin ama içinde tek bir bahis sinyali bile yok → modele sorulmaz.
+     *
+     * 24 Eylül saha testi: model uzun metinlerde futbol haberlerini (transfer,
+     * sakatlık, maç özeti) ve duyuru/kampanya dilini (kontenjan, başvuru formu,
+     * son gün) teşvik sanıyor. Sebebi eğitim setindeki bahis-SEO pozitiflerinin
+     * de aynı dille yazılmış olması (model/data/GERCEK_VERI_KAYNAKLARI.md,
+     * "p-web pozitifleri" notu).
+     *
+     * Modelin kelime listesine kattığı asıl değer sansürlü/yeni yazımları
+     * yakalamak; bu yüzden sinyal araması harf-rakam katlamasına ve noktalama
+     * sökmeye dayanıklıdır ("b0nus", "b.o.n.u.s" da sinyal sayılır). Bu
+     * uzunlukta bir teşvik metninin listedeki 30+ terimden hiçbirini
+     * içermemesi beklenmez.
+     *
+     * DİKKAT: kısa metinlerde kural KAPALIDIR — model orada tek başına karar
+     * vermeye devam eder.
+     */
+    private fun isLongTextWithoutBettingSignal(n: String): Boolean =
+        n.length >= LONG_TEXT_CHARS && !hasBettingSignal(n) && !hasPromoSignal(n)
+
+    /**
+     * Metin tanıtım YAPISI taşıyor mu? Kelimeden bağımsız biçimsel işaretler:
+     * bağlantı, para tutarı, yüzde, hediye/bedava vaadi, üyelik çağrısı.
+     *
+     * 24 Eylül: "MILANBAH*S" gibi yıldızlı sansür hiçbir kelime aramasına
+     * takılmıyor ve uzun metin kapısı gerçek bir SMS teşvikini kaçırdı. Bu
+     * yüzden kapı artık yalnız kelimeye değil, metnin biçimine de bakıyor —
+     * spam kelimelerini gizleyebilir, ama linkini ve para vaadini gizleyemez.
+     *
+     * Haber ve duyuru metinleri bu işaretlerin hiçbirini taşımaz.
+     */
+    private fun hasPromoSignal(n: String): Boolean = PROMO_PATTERNS.any { it.containsMatchIn(n) }
+
+    /**
+     * Metinde bahse özgü bir terim geçiyor mu? İki yazım kaçağına dayanıklıdır:
+     * harf yerine rakam ("b0nus") ve araya noktalama/boşluk sokma ("b.o.n.u.s",
+     * "@denemebonusu"). İkinci arama kelime sınırı tanımadığı için yalnızca
+     * uzun ve ayırt edici terimlerle yapılır.
+     */
+    private fun hasBettingSignal(n: String): Boolean {
+        val leet = n.map { LEET_HARITASI[it] ?: it }.joinToString("")
+        return BAHIS_SINYALI_RE.containsMatchIn(leet) ||
+            BAHIS_SINYALI_SIKISIK_RE.containsMatchIn(leet.filter { it.isLetterOrDigit() })
+    }
+
+    /**
+     * "Ahmet", "Yılmaz", "MEHMET", "O'Brien", "Kaya-Demir", "hoca" → ad parçası.
+     * Büyük harf şartı burada DEĞİL, satır düzeyinde aranır: rehberdeki kayıtlar
+     * "Halil hoca", "aylin" gibi karışık yazılıyor ve tek küçük harfli kelime
+     * bütün üye listesini kimlik olmaktan çıkarıyordu (24 Eylül saha raporu).
+     */
+    private fun isNameWord(token: String): Boolean {
+        if (token.length > NAME_WORD_MAX_LEN) return false
+        return token.all { it.isLetter() || it in NAME_WORD_PUNCTUATION }
     }
 
     private fun isFilePreview(n: String): Boolean {
@@ -124,6 +257,26 @@ class SurfaceGuard {
             p == "org.thunderdog.challegram"
     }
 
+    /**
+     * Ad-soyad kapısının açık olduğu yüzeyler: akış/sohbet listelerinde her
+     * gönderinin yanında kişi adı vardır ve bunlar içerik değildir. Haber
+     * uygulamaları ve tarayıcı bu listede YOKTUR — orada "Ahmet Yılmaz" bir
+     * başlık parçası olabilir.
+     */
+    private fun isIdentityNamePackage(context: SurfaceContext): Boolean {
+        if (isMessagingPackage(context)) return true
+        val p = context.packageName ?: return false
+        return p == "com.instagram.android" ||
+            p == "com.twitter.android" ||
+            p == "com.zhiliaoapp.musically" || // TikTok
+            p == "com.facebook.katana" ||
+            p == "com.snapchat.android" ||
+            p == "com.google.android.contacts" ||
+            p == "com.android.contacts" ||
+            p == "com.google.android.apps.messaging" ||
+            p == "com.android.mms"
+    }
+
     private fun isProfessionalPackage(context: SurfaceContext): Boolean {
         val p = context.packageName ?: return false
         return p == "com.linkedin.android"
@@ -153,7 +306,8 @@ class SurfaceGuard {
 
     private companion object {
         private val TURKISH = Locale.forLanguageTag("tr")
-        private const val CACHE_VERSION = 2
+        // Kapı mantığı değişince eski kararlar geçersiz olmalı: sürümü artır
+        private const val CACHE_VERSION = 3
 
         // Genel eşik = modelin nihai eşiği (esik_karari.json ile tek kaynak);
         // yüzey eşikleri taslağın göreli aralıklarıyla 0.70-0.90 penceresinde
@@ -182,6 +336,9 @@ class SurfaceGuard {
             Regex("^.{1,80}\\s+bu grubu bir topluluktan cikardi\\.?$"),
             Regex("^.{1,80}\\s+bu grubu olusturdu\\.?$"),
             Regex("^.{1,80}\\s+gruptan ayrildi\\.?$"),
+            Regex("^(~\\s*)?.{1,80}\\s+gruba eklendi\\.?$"),
+            Regex("^(~\\s*)?.{1,80}\\s+gruptan cikarildi\\.?$"),
+            Regex("^(~\\s*)?.{1,80}\\s+telefon numarasini degistirdi\\.?$"),
             Regex("^.{1,80}\\s+grup simgesini degistirdi\\.?$"),
             Regex("^.{1,80}\\s+grup aciklamasini degistirdi\\.?$"),
             Regex("^mesajlar ve aramalar uctan uca sifrelidir\\.?$"),
@@ -189,9 +346,15 @@ class SurfaceGuard {
             Regex("^bu mesaj silindi\\.?$"),
         )
 
+        // DİKKAT: anahtar kelimeler tek başına aranmaz. "var" Türkçede çok
+        // sık geçen bir kelime ("fırsat var") ve bu kapı açıldığında metin
+        // modele hiç sorulmuyordu — teşvik içeriği kaçıyordu (24 Eylül).
+        // Bu yüzden bildirim kalıbı aranır, salt kelime değil.
         private val CODE_PATTERNS = listOf(
-            Regex("\\b(public|private|class|void|static|return|arraylist|integer|string|system\\.out\\.println)\\b"),
-            Regex("\\b(val|var|fun|println|import|extends|implements)\\b"),
+            Regex("\\b(public|private|class|void|static|arraylist|integer|system\\.out\\.println)\\b"),
+            Regex("\\b(val|var)\\s+[a-z_][a-z0-9_]*\\s*[:=]"),
+            Regex("\\bfun\\s+[a-z_][a-z0-9_]*\\s*\\("),
+            Regex("\\b(println|extends|implements)\\b"),
             Regex("[a-z0-9_]+\\s*=\\s*new\\s+[a-z0-9_]+"),
         )
         private val CODE_SYMBOLS = listOf("{", "}", ";", "()", "[]", "<", ">", "==", "->")
@@ -237,6 +400,91 @@ class SurfaceGuard {
             Regex("\\d+\\s*(sn|dk|sa|saat|dakika|gun|hafta|ay|yil)\\s*once"),
             Regex("(paylas|kaydet|bildir|takip et|abone ol|begen|yanitla|yorum yap)"),
             Regex("\\d+([.,]\\d+)?[bkm]?"),
+        )
+
+        // --- Uzun metin / bahis sinyali kapısı ---
+        // Saha örneklerinin en kısası 112 karakterdi (transfer haberi); 90
+        // pay bırakır. Altında model tek başına karar vermeye devam eder.
+        private const val LONG_TEXT_CHARS = 90
+
+        /** Sansürlü yazımları çözmek için: "b0nus" → "bonus", "ç3vr1m" → "cevrim". */
+        private val LEET_HARITASI = mapOf(
+            '0' to 'o', '1' to 'i', '3' to 'e', '4' to 'a',
+            '5' to 's', '7' to 't', '8' to 'b', '@' to 'a', '$' to 's',
+        )
+
+        /**
+         * Yalnızca bahse özgü terimler — "katıl", "kazan", "üye", "link" gibi
+         * meşru metinde de sık geçen kelimeler BİLEREK dışarıda bırakıldı
+         * (ör. "katılım formu" bir duyuruyu teşvik saydırmamalı).
+         */
+        private const val BAHIS_SINYAL_KELIMELERI =
+            "bahis|iddaa|casino|kazino|kumar|slot|rulet|jackpot|bonus|freespin|" +
+                "free ?spin|freebet|betting|cevrim(?!ici|disi)|banko|kupon|oran|misli|tombala|" +
+                "poker|blackjack|bakara|rulo|jeton|papara|bahisci|yatirim|cekim|" +
+                "telegram|t\\.me|vip|kacak"
+
+        /**
+         * Tanıtım yapısı işaretleri. Haber/duyuru metinlerinde bulunmaz;
+         * teşvik metninde en az biri neredeyse zorunludur (bir yere
+         * yönlendirmek ve bir şey vadetmek durumundadır).
+         */
+        private val PROMO_PATTERNS = listOf(
+            Regex("https?://|www\\.|\\bt\\.me/"),                       // bağlantı
+            Regex("\\b[a-z0-9-]{2,}\\.(com|net|org|xyz|site|online|club|top|info|biz|link|bet|tv)\\b"),
+            Regex("\\d[\\d.,]*\\s*(tl|try|₺|usd|\\$|euro|€)\\b"),       // para vaadi
+            Regex("(%\\s*\\d|\\d\\s*%)"),                                // yüzde
+            Regex("\\b(hediye|bedava|ucretsiz|promosyon|promo\\s*kod)\\b"),
+            Regex("\\b(uye ol|kayit ol|hesap ac|giris yap|hemen tikla|tiklayin|linke tikla)\\b"),
+        )
+
+        private val BAHIS_SINYALI_RE = Regex("\\b($BAHIS_SINYAL_KELIMELERI)")
+
+        /**
+         * Noktalama sökülmüş ("b.o.n.u.s") hâl için kelime sınırı olmadan
+         * aranır; bu yüzden yalnızca uzun ve ayırt edici terimler kullanılır —
+         * "oran" boşluksuz metinde "soran"a takılırdı.
+         */
+        private val BAHIS_SINYALI_SIKISIK_RE = Regex(
+            "(bahis|iddaa|casino|kazino|kumar|jackpot|bonus|freespin|freebet|" +
+                "betting|cevrim(?!ici|disi)|banko|kupon|tombala|blackjack|bakara|papara|" +
+                "bahisci|yatirim|telegram)",
+        )
+
+        // --- Kimlik satırı kapısı ---
+        private const val IDENTITY_MAX_LEN = 48
+        private const val IDENTITY_MAX_WORDS = 4
+        // WhatsApp grup başlığındaki üye listesi ("Aylin, Ezgi, Halil Hadra, Sen").
+        // Kalabalık gruplarda bu satır uzun olur; erişilebilirlik metni ekranda
+        // kırpılmış görünse de tam listeyi taşır.
+        private const val IDENTITY_LIST_MAX_LEN = 300
+        private const val IDENTITY_LIST_MAX_WORDS = 40
+        private const val IDENTITY_PART_MAX_WORDS = 4
+        private const val NAME_UPPERCASE_RATIO = 0.5
+        private const val NAME_WORD_MAX_LEN = 20
+        private const val PHONE_MIN_DIGITS = 7
+        private const val PHONE_CHAR_RATIO = 0.9
+        private const val PHONE_PUNCTUATION = "+()-/. "
+        private const val NAME_WORD_PUNCTUATION = "'’-."
+        private val TOKEN_TRIM_CHARS =
+            charArrayOf('·', '•', ',', '.', '|', '-', '(', ')', ':', '~', '…')
+        private val WHITESPACE_RE = Regex("\\s+")
+        private val META_TOKEN_RE = Regex("^\\d+[a-z]{0,6}$")
+
+        /**
+         * Kimlik kapısını iptal eden kelimeler: bunlardan biri geçiyorsa metin
+         * "sadece bir isim" sayılmaz, karar modele bırakılır. Liste bilinçli
+         * olarak geniş tutuldu — kapıyı fazla açmaktansa modele sormak yeğdir.
+         * Kelime BAŞI eşleşir ("kuponu", "yatirim" girer; "Atlas" girmez).
+         */
+        private val SOFT_BETTING_WORDS = listOf(
+            Regex(
+                "\\b(bahis|iddaa|iddia|casino|kazino|kumar|slot|rulet|jackpot|bonus|" +
+                    "spin|freebet|cevrim(?!ici|disi)|kupon|oran|banko|kombine|yatir|cekim|kazan|" +
+                    "jeton|kanal|telegram|vip|katil|uyelik|cekilis|poker|tombala|" +
+                    "misli|kacak)",
+            ),
+            Regex("\\b\\d+\\s*(tl|try|₺)\\b"),
         )
 
         private val EMAIL_RE = Regex("[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,}")
