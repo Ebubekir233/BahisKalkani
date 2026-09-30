@@ -100,6 +100,25 @@ function hideNode(parent) {
   sayaciArtir();
 }
 
+// Kapatılacak kutuyu seç. Demo sayfasında gönderiler ".post" sınıflı; gerçek
+// sitelerde bu sınıf yok ve yalnızca eşleşen metnin en yakın etiketi (örneğin
+// arama sonucundaki kalın yazılı parça) kapanıyor, başlığın kalanı ve bahis
+// sitesinin adresi açıkta kalıyordu (Bing testi: 10 kartın 10'u yarım).
+// Bu yüzden önce ".post", sonra genel "kart" kalıpları (article / liste öğesi)
+// aranır. Kart ekranın çoğunu kaplıyorsa (sayfa iskeleti) seçilmez, yalnızca
+// eşleşen metnin etiketi kapatılır.
+const KART_SECICI = 'article, [role="article"], li';
+function kapsayiciBul(el) {
+  const post = el.closest('.post');
+  if (post) return post;
+  const kart = el.closest(KART_SECICI);
+  if (kart && kart !== document.body) {
+    const yukseklik = kart.getBoundingClientRect().height;
+    if (yukseklik > 0 && yukseklik < window.innerHeight * 0.8) return kart;
+  }
+  return el;
+}
+
 let taramaCalisiyor = false;
 let tekrarTaramaGerekli = false;
 
@@ -150,7 +169,7 @@ const walker = document.createTreeWalker(
         // Gönderinin tamamını (varsa .post kutusunu) hedefle, sadece
         // eşleşen küçük metin parçasını değil — aynı gönderi birden
         // fazla parça eşleşse bile Set sayesinde tek sayılır
-        const container = node.parentElement.closest('.post') || node.parentElement;
+        const container = kapsayiciBul(node.parentElement);
         matchedContainers.add(container);
       }
     }
