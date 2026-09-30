@@ -53,6 +53,10 @@
   .post-head .name { font-weight: 700; }
   .post-head .handle, .post-head .time { color: var(--text-dim); }
   .post-text { margin-top: 4px; font-size: 15px; line-height: 1.5; white-space: pre-wrap; }
+  .post-img {
+    display: block; width: 100%; max-height: 380px; object-fit: cover;
+    margin-top: 10px; border-radius: 14px; border: 1px solid var(--border);
+  }
   .post-actions {
     display: flex; gap: 48px; margin-top: 10px;
     color: var(--text-dim); font-size: 13px;
@@ -72,7 +76,7 @@
     <div class="logo">🛡</div>
     <div class="header-titles">
       <h1>Akış</h1>
-      <p>Bahis Kalkanı — web demo</p>
+      <p>Bahis Kalkanı - Web Demo</p>
     </div>
   </div>
 </header>
@@ -87,25 +91,49 @@
 </footer>
 
 <script>
-  // === Örnek akış (Ezgi'nin posts.json formatına yakın) ===
-  // ~%30 bahis (düz + sansürlü + Telegram davet), ~%70 masum + tuzak kelimeli
-  // Bu liste, eklentinin (veya Android modelinin) gerçek koşullarda test
-  // edilmesi için nötr içerik üretir — sayfanın kendisi hiçbir tespit/
-  // engelleme yapmaz.
+  // === Örnek akış ===
+  // İlk 12 gönderi web demoya özgü; diğerleri Ezgi'nin SosyalApp
+  // posts.json'undan seçildi (aynı içerik telefonda kalkanla, bilgisayarda
+  // eklentiyle yakalanabilsin diye). Görseller de SosyalApp'teki sentetik
+  // mockup'lardır (gorseller/). Dağılım: 11 bahis (düz + sansürlü + Telegram
+  // davet), 19 masum + tuzak kelimeli ("bahse girerim", "RAM slotu",
+  // "indirim kuponu", "okey turnuvası"...).
+  // Sayfanın kendisi hiçbir tespit/engelleme yapmaz.
   const POSTS = [
-    { name: "Spor Yorumu", handle: "@sporyorum", time: "2s", color: "#1d9bf0", text: "Derbi öncesi son durum: iki takım da eksiklerine rağmen iddialı. Sizce skor ne olur?" },
-    { name: "Kazanç Kanalı", handle: "@vipkupon", time: "3s", color: "#e0245e", text: "🔥 Deneme bonusu 500 TL! Çevrim yok, hemen çek. Kanala katıl: t.me/viponuslar" },
-    { name: "Ayşe", handle: "@ayse_yldz", time: "5s", color: "#794bc4", text: "Betül'le kütüphanede alfabetik sıralama ödevini bitirdik nihayet 😄" },
-    { name: "Son Dakika", handle: "@haberajans", time: "8s", color: "#f45d22", text: "Yasa dışı bahis operasyonu: 12 ilde 40 gözaltı, 76 milyon lira el konuldu." },
-    { name: "Free Spin Bot", handle: "@slotkral", time: "12s", color: "#17bf63", text: "c4sino gecesi başladı! Ç3vrimsiz b0nus ve free spin için DM at, link gelsin 🎰" },
-    { name: "Mehmet Kaya", handle: "@mkaya", time: "15s", color: "#ffad1f", text: "Bugün hava harika, sahilde uzun bir yürüyüş yaptım. Herkese iyi hafta sonları!" },
-    { name: "Teknoloji", handle: "@teknohaber", time: "18s", color: "#1d9bf0", text: "Yeni telefon modelleri tanıtıldı: daha iyi kamera, daha uzun batarya ömrü." },
-    { name: "Banko Hoca", handle: "@bankococ", time: "22s", color: "#e0245e", text: "Dünkü kuponla kasa katladık 💰 Bugünün bankosu için özel gruba gel, oranlar uçuyor!" },
-    { name: "Zeynep", handle: "@zeynep_a", time: "25s", color: "#794bc4", text: "Kumar bağımlılığı ciddi bir sorun. Yardım hattı: 191 — utanmayın, arayın." },
-    { name: "Yemek Tarifi", handle: "@lezzetli", time: "30s", color: "#17bf63", text: "Fırında sebzeli tavuk tarifi: 40 dakikada hazır, çok pratik ve sağlıklı 🍗" },
-    { name: "İddaa Tüyo", handle: "@iddaavip", time: "35s", color: "#ffad1f", text: "Canlı bahis fırsatı! Bu maçta oran 8.50'ye çıktı, kaçırma. Üye ol kazan." },
-    { name: "Ali Demir", handle: "@alidemir", time: "40s", color: "#1d9bf0", text: "Kitap önerisi: bu ay okuduğum en iyi roman. İddialı bir kurgu, sonu şaşırtıyor." },
+    { name: "Spor Yorumu", handle: "@sporyorum", time: "2s", color: "#1d9bf0", text: "Derbi öncesi son durum: iki takım da eksiklerine rağmen iddialı. Sizce skor ne olur?", yorum: 7, paylasim: 10, begeni: 522 },
+    { name: "Kazanç Kanalı", handle: "@vipkupon", time: "3s", color: "#e0245e", text: "🔥 Deneme bonusu 500 TL! Çevrim yok, hemen çek. Kanala katıl: t.me/viponuslar", yorum: 34, paylasim: 36, begeni: 1214 },
+    { name: "Kedi Sahibi", handle: "@kedi_sahibi", time: "4s", color: "#794bc4", text: "Kedim bütün gün koltukta uyudu, ne güzel hayat 🐱", img: "gorseller/mock_normal_kedi.png", yorum: 38, paylasim: 19, begeni: 577 },
+    { name: "Ayşe", handle: "@ayse_yldz", time: "5s", color: "#794bc4", text: "Betül'le kütüphanede alfabetik sıralama ödevini bitirdik nihayet 😄", yorum: 26, paylasim: 25, begeni: 594 },
+    { name: "Son Dakika", handle: "@haberajans", time: "8s", color: "#f45d22", text: "Yasa dışı bahis operasyonu: 12 ilde 40 gözaltı, 76 milyon lira el konuldu.", yorum: 370, paylasim: 898, begeni: 4380 },
+    { name: "Spin Dünyası", handle: "@spin_dunyasi", time: "10s", color: "#e0245e", text: "3 tane 7 geldi, jackpot! Sen de dene 🎰", img: "gorseller/mock_bet_slot.png", yorum: 33, paylasim: 160, begeni: 2106 },
+    { name: "Free Spin Bot", handle: "@slotkral", time: "12s", color: "#17bf63", text: "c4sino gecesi başladı! Ç3vrimsiz b0nus ve free spin için DM at, link gelsin 🎰", yorum: 15, paylasim: 0, begeni: 636 },
+    { name: "Aile Okeyi", handle: "@aile_okeyi", time: "14s", color: "#ffad1f", text: "Pazar akşamı okey turnuvası, kaybeden bulaşıkları yıkıyor 😄", img: "gorseller/mock_trap_okey.png", yorum: 5, paylasim: 3, begeni: 302 },
+    { name: "Mehmet Kaya", handle: "@mkaya", time: "15s", color: "#ffad1f", text: "Bugün hava harika, sahilde uzun bir yürüyüş yaptım. Herkese iyi hafta sonları!", yorum: 6, paylasim: 14, begeni: 19 },
+    { name: "Teknoloji", handle: "@teknohaber", time: "18s", color: "#1d9bf0", text: "Yeni telefon modelleri tanıtıldı: daha iyi kamera, daha uzun batarya ömrü.", yorum: 440, paylasim: 652, begeni: 3982 },
+    { name: "Mert", handle: "@kosucu_mert", time: "20s", color: "#17bf63", text: "10K koşuyu 52 dakikada bitirdim, kişisel rekor! 🏃", img: "gorseller/mock_normal_kosu.png", yorum: 20, paylasim: 6, begeni: 414 },
+    { name: "Banko Hoca", handle: "@bankococ", time: "22s", color: "#e0245e", text: "Dünkü kuponla kasa katladık 💰 Bugünün bankosu için özel gruba gel, oranlar uçuyor!", yorum: 18, paylasim: 99, begeni: 1760 },
+    { name: "Burcu Tan", handle: "@burcu_tan", time: "24s", color: "#794bc4", text: "Bahse girerim yarın da yağmur yağacak, şemsiyeyi unutmayın ☔", yorum: 24, paylasim: 23, begeni: 533 },
+    { name: "Zeynep", handle: "@zeynep_a", time: "25s", color: "#794bc4", text: "Kumar bağımlılığı ciddi bir sorun. Yardım hattı: 191 — utanmayın, arayın.", yorum: 40, paylasim: 2, begeni: 356 },
+    { name: "İddia Sever", handle: "@iddia_sever", time: "28s", color: "#ffad1f", text: "1ddaa kuponu: MS1 + KG, oran 4.20. Kupona ekle, kazan!", img: "gorseller/mock_bet_kupon.png", yorum: 5, paylasim: 17, begeni: 558 },
+    { name: "Yemek Tarifi", handle: "@lezzetli", time: "30s", color: "#17bf63", text: "Fırında sebzeli tavuk tarifi: 40 dakikada hazır, çok pratik ve sağlıklı 🍗", yorum: 18, paylasim: 9, begeni: 476 },
+    { name: "Market Fırsatları", handle: "@market_takip", time: "32s", color: "#f45d22", text: "Mahalle marketinde hafta sonu indirim kuponu var, kaçırmayın 🛒", img: "gorseller/mock_trap_marketkupon.png", yorum: 9, paylasim: 20, begeni: 599 },
+    { name: "B.E.T.T.O.R", handle: "@b_e_t_t_o_r", time: "34s", color: "#e0245e", text: "B.a.h.i.s sitesi arayan yazsın, güvenilir bahis adresi DM'de 👀", img: "gorseller/mock_bet_telegram.png", yorum: 21, paylasim: 16, begeni: 1810 },
+    { name: "İddaa Tüyo", handle: "@iddaavip", time: "35s", color: "#ffad1f", text: "Canlı bahis fırsatı! Bu maçta oran 8.50'ye çıktı, kaçırma. Üye ol kazan.", yorum: 25, paylasim: 128, begeni: 2029 },
+    { name: "Mehmet Demir", handle: "@mehmet_demir", time: "38s", color: "#1d9bf0", text: "Antalya'da tatil, deniz çok güzel!", img: "gorseller/mock_normal_plaj.png", yorum: 5, paylasim: 12, begeni: 607 },
+    { name: "Ali Demir", handle: "@alidemir", time: "40s", color: "#1d9bf0", text: "Kitap önerisi: bu ay okuduğum en iyi roman. İddialı bir kurgu, sonu şaşırtıyor.", yorum: 35, paylasim: 15, begeni: 127 },
+    { name: "Canlı Maç TV", handle: "@canli_bahis", time: "42s", color: "#e0245e", text: "Canlı maç izle, canlı bahis yap! Telegram'da bekliyoruz 📱", img: "gorseller/mock_bet_canli.png", yorum: 29, paylasim: 139, begeni: 2311 },
+    { name: "Bilgisayarcı Emre", handle: "@bilgisayarci", time: "45s", color: "#1d9bf0", text: "Anakartta boş RAM slotu kalmadı, yükseltme zor olacak 💻", yorum: 25, paylasim: 16, begeni: 272 },
+    { name: "Okul Takımı", handle: "@okul_takimi", time: "48s", color: "#17bf63", text: "Okul takımımız turnuvada kazandı! Herkese tebrikler 🏆", img: "gorseller/mock_trap_macsonucu.png", yorum: 26, paylasim: 18, begeni: 498 },
+    { name: "Royal VIP", handle: "@royal_vip", time: "50s", color: "#e0245e", text: "Canlı krupiye ile rulet keyfi 🎲 Kayıt linki profilde", yorum: 34, paylasim: 142, begeni: 403 },
+    { name: "Kaan", handle: "@muzisyen_kaan", time: "52s", color: "#794bc4", text: "Gitarda yeni bir parça öğrendim, akşam kayıt alacağım 🎸", img: "gorseller/mock_normal_gitar.png", yorum: 36, paylasim: 7, begeni: 140 },
+    { name: "Tarih Kulübü", handle: "@tarih_kulubu", time: "55s", color: "#f45d22", text: "Monte Carlo'nun tarihini araştırdım, çok ilginç bir şehir", yorum: 3, paylasim: 22, begeni: 543 },
+    { name: "Bonus Fırsatı", handle: "@bonus_firsati", time: "58s", color: "#e0245e", text: "Deneme bonusu ile günde 5000 TL kazan! Üyelik linki profilde.", yorum: 8, paylasim: 119, begeni: 2225 },
+    { name: "Anneanne Mutfağı", handle: "@yemek_tarifi", time: "1dk", color: "#17bf63", text: "Mercimek çorbası tarifimi paylaştım, çok beğenildi 🍲", img: "gorseller/mock_normal_corba.png", yorum: 9, paylasim: 15, begeni: 242 },
+    { name: "Kazan Kazan", handle: "@kazan_kazan", time: "2dk", color: "#ffad1f", text: "Yatır kazan sistemi! Min 100TL yatır, 200TL bonus al!", yorum: 9, paylasim: 126, begeni: 2222 },
   ];
+
+  // 1000 ve üzeri sayılar Twitter'daki gibi kısaltılır: 1234 -> 1,2B
+  const sayi = (n) => (n >= 1000 ? (n / 1000).toFixed(1).replace(".", ",") + "B" : String(n));
 
   const feed = document.getElementById("feed");
   POSTS.forEach((p) => {
@@ -120,9 +148,17 @@
           <span class="time">· ${p.time}</span>
         </div>
         <div class="post-text"></div>
-        <div class="post-actions"><span>💬 12</span><span>🔁 4</span><span>❤️ 38</span></div>
+        <div class="post-actions"><span>💬 ${sayi(p.yorum)}</span><span>🔁 ${sayi(p.paylasim)}</span><span>❤️ ${sayi(p.begeni)}</span></div>
       </div>`;
     el.querySelector(".post-text").textContent = p.text;
+    if (p.img) {
+      const img = document.createElement("img");
+      img.className = "post-img";
+      img.src = p.img;
+      img.alt = "";
+      img.loading = "lazy";
+      el.querySelector(".post-text").after(img);
+    }
     feed.appendChild(el);
   });
 </script>

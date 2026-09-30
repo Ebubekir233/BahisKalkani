@@ -63,7 +63,7 @@ class MainActivity : ComponentActivity() {
                             // ACTION_DIAL: numarayı arama ekranına yazar, aramayı
                             // KULLANICI kendi başlatır — CALL_PHONE izni gerekmez,
                             // uygulama kullanıcı adına arama başlatmaz.
-                            startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:191")))
+                            startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:115")))
                         },
                         modifier = Modifier.padding(innerPadding),
                     )

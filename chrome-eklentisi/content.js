@@ -10,6 +10,79 @@ function sayaciArtir() {
     });
   });
 }
+
+// --- YEDAM yönlendirmesi ---
+// Kullanıcı engellenen içeriği sık sık "Yine de göster" ile açıyorsa, onu
+// yargılamadan Yeşilay Danışmanlık Merkezi'ne (YEDAM) yönlendiren bir kart
+// gösterilir. Android uygulamasıyla aynı eşik ve aynı metin kullanılır.
+// KVKK: yalnızca bir sayı tutulur, oturum deposunda (tarayıcı kapanınca
+// silinir); hangi içeriğin açıldığı kaydedilmez, hiçbir yere gönderilmez.
+const YEDAM_ESIGI = 3;
+
+function yineDeGosterKaydet() {
+  sayacKuyrugu = sayacKuyrugu.then(() => {
+    return new Promise((resolve) => {
+      chrome.storage.session.get(["yineDeGosterSayisi", "yedamKartiKapatildi"], (result) => {
+        const yeni = (result.yineDeGosterSayisi || 0) + 1;
+        chrome.storage.session.set({ yineDeGosterSayisi: yeni }, () => {
+          if (yeni >= YEDAM_ESIGI && !result.yedamKartiKapatildi) yedamKartiGoster();
+          resolve();
+        });
+      });
+    });
+  });
+}
+
+function yedamKartiGoster() {
+  if (document.getElementById("bk-yedam-karti")) return;
+
+  // Kart Shadow DOM içinde: sitenin kendi stilleri kartı bozamaz, kartın
+  // metni de sayfa taramasına girmez.
+  const kutu = document.createElement("div");
+  kutu.id = "bk-yedam-karti";
+  kutu.className = "bk-ignore";
+  kutu.style.cssText = "position: fixed; right: 20px; bottom: 20px; z-index: 2147483647;";
+  const kok = kutu.attachShadow({ mode: "closed" });
+  kok.innerHTML = `
+    <style>
+      .kart {
+        width: 320px; box-sizing: border-box; padding: 16px 18px;
+        background: #e8f5e9; color: #1b3d1f; border-radius: 14px;
+        font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+      }
+      .baslik { font-size: 16px; font-weight: 700; margin: 0 0 8px; }
+      .metin { font-size: 13px; line-height: 1.5; margin: 0 0 12px; }
+      .dugmeler { display: flex; gap: 8px; align-items: center; }
+      .ara {
+        flex: 1; text-align: center; padding: 9px 12px; border-radius: 10px;
+        background: #2e7d32; color: #fff; font-weight: 700; font-size: 14px;
+        text-decoration: none;
+      }
+      .kapat {
+        padding: 9px 12px; border-radius: 10px; border: 1px solid #9bbf9e;
+        background: transparent; color: #1b3d1f; font-size: 13px; cursor: pointer;
+      }
+      .alt { font-size: 11px; color: #4a6b4d; margin: 10px 0 0; }
+    </style>
+    <div class="kart" role="dialog" aria-label="YEDAM yönlendirmesi">
+      <p class="baslik">💚 Yalnız değilsin</p>
+      <p class="metin">Engellenen içeriği sık sık görüntülediğini fark ettik. İstersen
+        Yeşilay Danışmanlık Merkezi'ni (YEDAM) ücretsiz ve gizlilik içinde arayabilirsin.</p>
+      <div class="dugmeler">
+        <a class="ara" href="tel:115">📞 115'i Ara</a>
+        <button class="kapat" type="button">Kapat</button>
+      </div>
+      <p class="alt">Bilgisayardan arıyorsan: 115 veya 444 79 75</p>
+    </div>`;
+
+  kok.querySelector(".kapat").addEventListener("click", () => {
+    kutu.remove();
+    chrome.storage.session.set({ yedamKartiKapatildi: true });
+  });
+
+  document.body.appendChild(kutu);
+}
 // Kelime listesi + meşru alan listesi background.js'ten bir kez alınır
 let veriSozu = null;
 function veriAl() {
@@ -87,6 +160,7 @@ function hideNode(parent) {
     e.stopPropagation();
     overlay.style.display = "none";
     tekrarGizleBtn.style.display = "block";
+    yineDeGosterKaydet();
   });
 
   tekrarGizleBtn.addEventListener("click", (e) => {
