@@ -18,6 +18,12 @@ function sayaciArtir() {
 // KVKK: yalnızca bir sayı tutulur, oturum deposunda (tarayıcı kapanınca
 // silinir); hangi içeriğin açıldığı kaydedilmez, hiçbir yere gönderilmez.
 const YEDAM_ESIGI = 3;
+// Bilgisayarda "tel:" bağlantısı çoğu zaman çalışmaz; bu yüzden kart telefonu
+// aramak yerine YEDAM'ın resmi sayfasını açar, 115 ise ayrıca yazılır.
+// yedam.org.tr erişilemez olduğunda da açılsın diye Yeşilay'ın kendi
+// sitesindeki YEDAM sayfası kullanılır. "noreferrer": açılan site,
+// kullanıcının hangi sayfadan (ör. engellenen bir içerikten) geldiğini görmez.
+const YEDAM_SAYFASI = "https://www.yesilay.org.tr/yesilay-danismanlik-merkezi/";
 
 function yineDeGosterKaydet() {
   sayacKuyrugu = sayacKuyrugu.then(() => {
@@ -63,17 +69,17 @@ function yedamKartiGoster() {
         padding: 9px 12px; border-radius: 10px; border: 1px solid #9bbf9e;
         background: transparent; color: #1b3d1f; font-size: 13px; cursor: pointer;
       }
-      .alt { font-size: 11px; color: #4a6b4d; margin: 10px 0 0; }
+      .hat { font-size: 14px; font-weight: 700; margin: 0 0 12px; }
     </style>
     <div class="kart" role="dialog" aria-label="YEDAM yönlendirmesi">
       <p class="baslik">💚 Yalnız değilsin</p>
       <p class="metin">Engellenen içeriği sık sık görüntülediğini fark ettik. İstersen
-        Yeşilay Danışmanlık Merkezi'ni (YEDAM) ücretsiz ve gizlilik içinde arayabilirsin.</p>
+        Yeşilay Danışmanlık Merkezi'ne (YEDAM) ücretsiz ve gizlilik içinde ulaşabilirsin.</p>
+      <p class="hat">📞 Danışma hattı: 115</p>
       <div class="dugmeler">
-        <a class="ara" href="tel:115">📞 115'i Ara</a>
+        <a class="ara" href="${YEDAM_SAYFASI}" target="_blank" rel="noopener noreferrer">YEDAM sayfasını aç</a>
         <button class="kapat" type="button">Kapat</button>
       </div>
-      <p class="alt">Bilgisayardan arıyorsan: 115 veya 444 79 75</p>
     </div>`;
 
   kok.querySelector(".kapat").addEventListener("click", () => {
