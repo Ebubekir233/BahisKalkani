@@ -21,6 +21,8 @@
     <string name="main_yedam_title">Yalnız değilsin</string>
     <string name="main_yedam_body">Engellenen içeriği sık sık görüntülediğini fark ettik. İstersen Yeşilay Danışmanlık Merkezi\'ni (YEDAM) ücretsiz ve gizlilik içinde arayabilirsin.</string>
     <string name="main_yedam_call">115\'i Ara</string>
+    <string name="main_apps_title">Nereden geldi?</string>
+    <string name="main_apps_hint">Engellenen içeriğin çoğu tek bir uygulamadan geliyorsa, o uygulamaya ara vermek işini kolaylaştırabilir.</string>
 
     <string name="overlay_warning">⚠️ Bahse teşvik eden içerik engellendi</string>
     <string name="overlay_show_anyway">Yine de göster</string>

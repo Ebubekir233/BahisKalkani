@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -22,6 +23,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -34,6 +36,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -56,6 +59,7 @@ class MainActivity : ComponentActivity() {
                         serviceEnabled = serviceEnabled,
                         blockedCount = BlockStats.blockedCount,
                         showAnywayCount = BlockStats.showAnywayCount,
+                        perApp = BlockStats.perApp,
                         onOpenSettings = {
                             startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
                         },
@@ -92,6 +96,7 @@ fun MainScreen(
     serviceEnabled: Boolean,
     blockedCount: Int,
     showAnywayCount: Int,
+    perApp: Map<String, Int> = emptyMap(),
     onOpenSettings: () -> Unit,
     onCallYedam: () -> Unit,
     modifier: Modifier = Modifier,
@@ -106,6 +111,7 @@ fun MainScreen(
         Header()
         StatusCard(serviceEnabled = serviceEnabled, onOpenSettings = onOpenSettings)
         CounterCard(blockedCount = blockedCount)
+        if (perApp.isNotEmpty()) AppBreakdownCard(perApp = perApp)
         if (showAnywayCount >= BlockStats.YEDAM_THRESHOLD) {
             YedamCard(onCallYedam = onCallYedam)
         }
@@ -227,6 +233,79 @@ private fun CounterCard(blockedCount: Int) {
     }
 }
 
+/** Uygulama adlari: paket gorunurlugu (Android 11+) nedeniyle diger
+ *  uygulamalarin adi her zaman okunamaz; bilinenler icin sabit ad kullanilir. */
+private val KNOWN_APP_NAMES = mapOf(
+    "com.whatsapp" to "WhatsApp",
+    "com.whatsapp.w4b" to "WhatsApp Business",
+    "org.telegram.messenger" to "Telegram",
+    "com.instagram.android" to "Instagram",
+    "com.twitter.android" to "X",
+    "com.zhiliaoapp.musically" to "TikTok",
+    "com.facebook.katana" to "Facebook",
+    "com.google.android.youtube" to "YouTube",
+    "com.android.chrome" to "Chrome",
+    "com.google.android.apps.messaging" to "Mesajlar",
+    "com.example.bahissandbox" to "SosyalApp",
+)
+
+@Composable
+private fun appLabel(packageName: String): String {
+    KNOWN_APP_NAMES[packageName]?.let { return it }
+    val pm = LocalContext.current.packageManager
+    return runCatching {
+        pm.getApplicationLabel(pm.getApplicationInfo(packageName, 0)).toString()
+    }.getOrDefault(packageName)
+}
+
+/**
+ * Engellenen icerigin hangi uygulamalardan geldigi (en fazla 5 uygulama).
+ * Amac: kullanici engellenenlerin cogunun tek bir uygulamadan geldigini
+ * gorup oraya ara verebilsin. Yalnizca sayilar gosterilir, icerik degil.
+ */
+@Composable
+private fun AppBreakdownCard(perApp: Map<String, Int>) {
+    val total = perApp.values.sum().coerceAtLeast(1)
+    val rows = perApp.entries.sortedByDescending { it.value }.take(5)
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Column(
+            modifier = Modifier.padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Text(
+                text = stringResource(R.string.main_apps_title),
+                style = MaterialTheme.typography.titleMedium,
+            )
+            rows.forEach { (pkg, count) ->
+                val share = count.toFloat() / total
+                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    Row(modifier = Modifier.fillMaxWidth()) {
+                        Text(
+                            text = appLabel(pkg),
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier.weight(1f),
+                        )
+                        Text(
+                            text = "%${(share * 100).toInt()}  ($count)",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                    LinearProgressIndicator(
+                        progress = { share },
+                        modifier = Modifier.fillMaxWidth().height(6.dp),
+                    )
+                }
+            }
+            Text(
+                text = stringResource(R.string.main_apps_hint),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+    }
+}
+
 /**
  * Kullanıcı korumayı sık sık "yine de göster" ile aştığında (bkz.
  * BlockStats.YEDAM_THRESHOLD) gösterilen nazik yönlendirme. Yargılayıcı
@@ -327,6 +406,12 @@ fun MainScreenActivePreview() {
             serviceEnabled = true,
             blockedCount = 27,
             showAnywayCount = 0,
+            perApp = mapOf(
+                "org.telegram.messenger" to 16,
+                "com.instagram.android" to 6,
+                "com.whatsapp" to 3,
+                "com.android.chrome" to 2,
+            ),
             onOpenSettings = {},
             onCallYedam = {},
         )

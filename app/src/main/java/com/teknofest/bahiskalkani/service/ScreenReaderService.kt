@@ -9,7 +9,6 @@ import android.os.Looper
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
-import com.teknofest.bahiskalkani.BuildConfig
 import com.teknofest.bahiskalkani.detection.KeywordDetector
 import com.teknofest.bahiskalkani.detection.SurfaceContext
 import com.teknofest.bahiskalkani.detection.SurfaceGuard
@@ -174,10 +173,8 @@ class ScreenReaderService : AccessibilityService() {
                     // Aynı metin ekranda birden çok yerde olabilir; anahtara sıra ekle
                     val key = "$hash:${out.count { it.textHash == hash }}"
                     out.add(CoverTarget(key, bounds, hash))
-                    if (countedHashes.add(hash)) {
-                        BlockStats.blockedCount++
-                        if (BuildConfig.DEBUG) Log.d(TAG, "TESPİT: $text")
-                    }
+                    // KVKK: tespit edilen metin hiçbir sürümde loglanmaz
+                    if (countedHashes.add(hash)) BlockStats.recordBlock(currentPackage)
                 }
             }
             // Eşleşen düğümün altına inmeye gerek yok, tamamı kapanacak
